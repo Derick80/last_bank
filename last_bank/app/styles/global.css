@@ -1,0 +1,32 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  /* Created with https://www.css-gradient.com */
+  background: rgba(150, 157, 231, 1);
+  background: -webkit-radial-gradient(
+    right,
+    rgba(150, 157, 231, 1),
+    rgba(15, 24, 42, 1)
+  );
+  background: -moz-radial-gradient(
+    right,
+    rgba(150, 157, 231, 1),
+    rgba(15, 24, 42, 1)
+  );
+  background: radial-gradient(
+    to left,
+    rgba(150, 157, 231, 1),
+    rgba(15, 24, 42, 1)
+  );
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+}
