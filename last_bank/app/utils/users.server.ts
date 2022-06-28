@@ -36,7 +36,7 @@ export const getAllUserData = async (userId: string, email: string) => {
   return { data }
 }
 
-export const getUserIncome = async (userId: string, email: string) => {
+export const getUserIncome = async (userId: string) => {
   const userIncomes = await prisma.income.findMany({
     where: { userId: userId },
     orderBy: {
@@ -45,7 +45,7 @@ export const getUserIncome = async (userId: string, email: string) => {
   })
   return { userIncomes }
 }
-export const getUserBill = async (userId: string, email: string) => {
+export const getUserBill = async (userId: string) => {
   const userBills = await prisma.bill.findMany({
     where: { userId: userId },
     orderBy: {

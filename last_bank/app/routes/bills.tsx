@@ -6,8 +6,8 @@ import { getUserBill } from '~/utils/users.server'
 
 export default function BillsRoute () {
     return (
-        <div>  <main>
+        <div>
             <Outlet />
-        </main></div>
+        </div>
     )
 }

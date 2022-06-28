@@ -11,8 +11,7 @@ import type { LinkProps } from "react-router-dom";
 import { useState } from 'react'
 import Button from '~/components/Button'
 import { Ibills2 } from '~/utils/types.server'
-
-
+import { useNavigate } from '@remix-run/react'
 export const loader: LoaderFunction = async ({ request }) => {
     const { userId, email } = await requireUserId(request)
     const { data } = await getAllUserData(userId, email)
@@ -33,11 +32,11 @@ interface IBills {
 
 
 export default function Dashboard () {
-    const { data, userBills, userIncomes } = useLoaderData()
+    const { data, userBills, userIncomes, userId } = useLoaderData()
     console.log(Array.isArray(data));
-    let { userId } = useParams();
-    console.log(userId);
 
+    console.log(userId);
+    const navigate = useNavigate()
     let location = useLocation();
     console.log(location);
     const [billAction, setBillAction] = useState('bills')
@@ -62,9 +61,11 @@ export default function Dashboard () {
     }
 
     return (
-        <Layout>
-            <>
-                <div className='h-full w-full col-span-1 md:col-start-2 md:col-end-6'>
+
+        <>
+            <div className='h-full w-full col-span-1 md:col-start-2 md:col-end-6'>
+                <div className='flex flex-row items-center'>
+                    <p className='underline underline-offset-8 text-lg md:text-3xl'>${ numberWithCommas(totalBills) }</p>
                     <Button onClick={ () => { setBillAction('bills') } } >
                         <Link to='new' >
                             Add A Bill
@@ -73,85 +74,89 @@ export default function Dashboard () {
                         <Outlet />
 
                     </Button>
-                    <h3>Bills</h3>
-                    <p className='underline underline-offset-8 text-lg md:text-3xl'>${ numberWithCommas(totalBills) }</p>
-                    {/* this is correct */ }
-                    <CardList items={ userBills } as='div'
-                        renderItem={ (bill: Ibills2) => (
-                            <div className='flex flex-col items-center text-center  w-full md:max-w-screen-xl rounded overflow-hidden shadow-lg m-2' key={ bill.id }>
-                                <div className='flex flex-row w-full justify-between'>
-                                    <div className='flex flex-col'>
-                                        <p className='underline'>Source </p>
-                                        <p>{ bill.source }</p>
-                                    </div>
-                                    <div className='flex flex-col'>
-                                        <p className='underline'>Due Date </p>
-                                        <p>{ formatISO(new Date(bill.due_date), { representation: 'date' }) }</p>
-
-                                    </div>
-                                    <div className='flex flex-col'>
-                                        <p className='underline'>Amount Due</p>
-
-                                        <p>${ numberWithCommas(bill.amount) }</p></div>
-                                </div>
-                                <div className="flex flex-row w-full justify-between">
-                                    <div className='flex flex-col'> <p className='underline'>Description:</p>
-                                        <p>{ bill.description }</p></div>
-                                    <div className='flex flex-col'> <p className='underline'>Recurring:</p>
-                                        <p className='uppercase'>{ String(bill.recurring) }</p></div>
-                                    <div className='flex flex-col'> <p className='underline'>Paid?:</p>
-                                        <p className='uppercase'>{ String(bill.paid) }</p></div>
-                                </div>
-                            </div>
-                        ) } />
-
+                    <Button onClick={ () => navigate(`bill/${userId}`) } >All Bills</Button>
 
                 </div>
-                <div className='h-full w-full col-span-1 md:col-start-7 md:col-end-12'>
-                    <div  >
-                        <Link to='new' className='button'>
-                            Add an Income
-                        </Link>
 
-                        <Outlet />
 
-                    </div>
+                {/* this is correct */ }
+                <CardList items={ userBills }
+                    renderItem={ (bill: Ibills2) => (
+                        <div className='flex flex-col items-center text-center  w-full md:max-w-screen-xl rounded overflow-hidden shadow-lg m-2' key={ bill.id }>
+                            <div className='flex flex-row w-full justify-between'>
+                                <div className='flex flex-col'>
+                                    <p className='underline'>Source </p>
+                                    <p>{ bill.source }</p>
+                                </div>
+                                <div className='flex flex-col'>
+                                    <p className='underline'>Due Date </p>
+                                    <p>{ formatISO(new Date(bill.due_date), { representation: 'date' }) }</p>
+
+                                </div>
+                                <div className='flex flex-col'>
+                                    <p className='underline'>Amount Due</p>
+
+                                    <p>${ numberWithCommas(bill.amount) }</p></div>
+                            </div>
+                            <div className="flex flex-row w-full justify-between">
+                                <div className='flex flex-col'> <p className='underline'>Description:</p>
+                                    <p>{ bill.description }</p></div>
+                                <div className='flex flex-col'> <p className='underline'>Recurring:</p>
+                                    <p className='uppercase'>{ String(bill.recurring) }</p></div>
+                                <div className='flex flex-col'> <p className='underline'>Paid?:</p>
+                                    <p className='uppercase'>{ String(bill.paid) }</p></div>
+                            </div>
+                        </div>
+                    ) } />
+
+
+            </div>
+            <div className='h-full col-span-1 md:col-start-7 md:col-end-12'>
+                <div className='flex flex-row items-center'>
+                    <Button onClick={ () => navigate(`income/${userId}`) } >All Incomes</Button>
                     <h3>Icome</h3>
                     <p className='underline underline-offset-8 text-lg md:text-3xl'>${ numberWithCommas(totalIncomes) }</p>
-                    {/* this is correct */ }
-                    <CardList items={ userIncomes } as='div'
-                        renderItem={ (income: any) => (
-                            <div className='flex flex-col items-center text-center  w-full md:max-w-screen-xl rounded overflow-hidden shadow-lg m-2' key={ income.id }>
-                                <div className='flex flex-row w-full justify-between'>
-                                    <div className='flex flex-col'>
-                                        <p className='underline'>Source </p>
-                                        <p>{ income.source }</p>
-                                    </div>
-                                    <div className='flex flex-col'>
-                                        <p className='underline'>Due Date </p>
-                                        <p>{ formatISO(new Date(income.payment_date), { representation: 'date' }) }</p>
+                    <Link to='new' className='button'>
+                        Add an Income
+                    </Link>
 
-                                    </div>
-                                    <div className='flex flex-col'>
-                                        <p className='underline'>Amount Due</p>
-
-                                        <p>${ numberWithCommas(income.amount) }</p></div>
-                                </div>
-                                <div className="flex flex-row w-full justify-between">
-                                    <div className='flex flex-col'> <p className='underline'>Description:</p>
-                                        <p>{ income.description }</p></div>
-                                    <div className='flex flex-col'></div>
-                                    <div className='flex flex-col'> <p className='underline'>Received?</p>
-                                        <p className='uppercase'>{ String(income.received) }</p></div>
-                                </div>
-                            </div>
-                        ) } />
-
+                    <Outlet />
 
                 </div>
-            </>
 
-        </Layout>
+                {/* this is correct */ }
+                <CardList items={ userIncomes }
+                    renderItem={ (income: any) => (
+                        <div className='flex flex-col items-center text-center  w-full md:max-w-screen-xl rounded shadow-lg m-2' key={ income.id }>
+                            <div className='flex flex-row w-full justify-between'>
+                                <div className='flex flex-col'>
+                                    <p className='underline'>Source </p>
+                                    <p>{ income.source }</p>
+                                </div>
+                                <div className='flex flex-col'>
+                                    <p className='underline'>Due Date </p>
+                                    <p>{ formatISO(new Date(income.payment_date), { representation: 'date' }) }</p>
+
+                                </div>
+                                <div className='flex flex-col'>
+                                    <p className='underline'>Amount Due</p>
+
+                                    <p>${ numberWithCommas(income.amount) }</p></div>
+                            </div>
+                            <div className="flex flex-row w-full justify-between">
+                                <div className='flex flex-col'> <p className='underline'>Description:</p>
+                                    <p>{ income.description }</p></div>
+                                <div className='flex flex-col'></div>
+                                <div className='flex flex-col'> <p className='underline'>Received?</p>
+                                    <p className='uppercase'>{ String(income.received) }</p></div>
+                            </div>
+                        </div>
+                    ) } />
+
+
+            </div>
+        </>
+
     )
 }
 

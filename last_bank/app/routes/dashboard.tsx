@@ -15,9 +15,8 @@ export default function DashboardRoute () {
 
     return (
         <Layout>
-            <main>
-                <Outlet />
-            </main>
+
+            <Outlet />
         </Layout>
     )
 }
