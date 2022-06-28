@@ -17,3 +17,18 @@ export const validatePassword = (password: string): string | undefined => {
 export const validateName = (name: string): string | undefined => {
   if (!name.length) return `Please enter a value`
 }
+
+export const validateBoolean = (name: boolean) => {
+  if (!name !== false || name !== true) return `Please enter a boolean value'`
+}
+export const validateText = (name: string): string | undefined => {
+  if (!name.length) return `Please enter some text`
+}
+
+export const validateAmount = (amount: number): string | undefined => {
+  if (amount <= 0) return `Please enter a number`
+}
+
+export const validateDate = (date: Date): string | undefined => {
+  if (!date) return `Please enter a date`
+}
