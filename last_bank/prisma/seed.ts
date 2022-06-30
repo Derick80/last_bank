@@ -21,6 +21,15 @@ async function seed() {
       password: hashedPassword
     }
   })
+  await prisma.profile.create({
+    data: {
+      userId: user.id,
+      currentLocation: 'chicago',
+      birthDay: '1980-03-03T19:00:52Z',
+      occupation: 'scientist',
+      preferredPronoun: 'He/Him'
+    }
+  })
   await prisma.income.create({
     data: {
       userId: user.id,

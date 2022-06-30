@@ -13,15 +13,17 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
+  id        String    @id @default(uuid())
+  email     String    @unique
   password  String
   firstName String
   lastName  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now())
   incomes   Income[]
   bills     Bill[]
+  profiles  Profile[]
+
 }
 
 model Income {
@@ -31,7 +33,7 @@ model Income {
   amount       Float
   payment_date DateTime
   received     Boolean  @default(false)
-  user         User     @relation(fields: [userId], references: [id])
+  user         User[]   @relation
   userId       String
 }
 
@@ -43,13 +45,23 @@ model Bill {
   due_date    DateTime
   recurring   Boolean    @default(true)
   paid        Boolean    @default(false)
-  user        User       @relation(fields: [userId], references: [id])
+  user        User[]     @relation
   userId      String
-  categories  Category[] @relation(references: [id])
+  categories  Category[] @relation
 }
 
 model Category {
   id    String @id @default(uuid())
   name  String
-  bills Bill[] @relation(references: [id])
+  bills Bill[] @relation
+}
+
+model Profile {
+  id               String   @id @default(uuid())
+  birthDay         DateTime
+  currentLocation  String
+  preferredPronoun String
+  occupation       String
+  user             User[]   @relation
+  userId           String
 }

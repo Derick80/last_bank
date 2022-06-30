@@ -21,7 +21,7 @@ export const createUser = async (user: RegisterForm) => {
   return { id: newUser.id, email: user.email }
 }
 
-export const getAllUserData = async (userId: string, email: string) => {
+export const getAllUserData = async (userId: string) => {
   const data = await prisma.user.findUnique({
     where: { id: userId },
 
@@ -29,7 +29,8 @@ export const getAllUserData = async (userId: string, email: string) => {
       id: true,
       email: true,
       bills: true,
-      incomes: true
+      incomes: true,
+      profiles: true
     }
   })
 
@@ -111,4 +112,13 @@ export const updateIncomes = async (income: IncomeForm, userId: string) => {
     }
   })
   return { editedIncome }
+}
+
+export const getUserProfile = async (userId: string) => {
+  const userProfile = await prisma.user.findUnique({
+    where: {
+      id: userId
+    }
+  })
+  return { userProfile }
 }

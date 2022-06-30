@@ -14,9 +14,9 @@ import { Ibills2 } from '~/utils/types.server'
 import { useNavigate } from '@remix-run/react'
 export const loader: LoaderFunction = async ({ request }) => {
     const { userId, email } = await requireUserId(request)
-    const { data } = await getAllUserData(userId, email)
-    const { userBills } = await getUserBill(userId, email)
-    const { userIncomes } = await getUserIncome(userId, email)
+    const { data } = await getAllUserData(userId)
+    const { userBills } = await getUserBill(userId)
+    const { userIncomes } = await getUserIncome(userId)
     return json({ data, userBills, userIncomes, userId })
 }
 interface IBills {
