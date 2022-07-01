@@ -12,7 +12,7 @@ export interface FormFieldProps {
 export default function FormField ({
     htmlFor,
     label,
-    type = 'text',
+    type,
     value,
     onChange = () => { },
     error = ''
@@ -21,15 +21,17 @@ export default function FormField ({
 
     return (
         <>
-            <label htmlFor={ htmlFor }>{ label }</label>
-            <input
+            <label className="text-black-600 font-semibold" htmlFor={ htmlFor }>{ label }</label>
+            <input className="text-black"
                 onChange={ (event) => {
                     onChange(event);
                     setErrorText('');
                 } }
                 type={ type }
+                id={ htmlFor }
                 name={ htmlFor }
                 value={ value }
+
             />
             <div>{ errorText || '' }</div>
         </>

@@ -22,6 +22,7 @@ export default function DashboardRoute () {
         <Layout>
             <UserPanel userProfile={ userProfile } />
             <Outlet />
+
         </Layout>
     )
 }

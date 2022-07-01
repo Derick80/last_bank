@@ -3,8 +3,8 @@ import React from 'react'
 import { requireUserId } from '~/utils/auth.server'
 import { getUserIncome } from '~/utils/users.server'
 export const loader: LoaderFunction = async ({ request }) => {
-    const { userId, email } = await requireUserId(request)
-    const { userIncomes } = await getUserIncome(userId, email)
+    const { userId } = await requireUserId(request)
+    const { userIncomes } = await getUserIncome(userId)
     return json({ userIncomes, userId })
 }
 export default function index () {

@@ -84,6 +84,7 @@ export interface LoginForm {
 }
 export interface BillForm {
   id?: string
+  userId: string
   source: string
   due_date: Date
   description: string

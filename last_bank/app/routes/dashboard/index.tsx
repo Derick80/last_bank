@@ -13,7 +13,7 @@ import Button from '~/components/Button'
 import { Ibills2 } from '~/utils/types.server'
 import { useNavigate } from '@remix-run/react'
 export const loader: LoaderFunction = async ({ request }) => {
-    const { userId, email } = await requireUserId(request)
+    const { userId } = await requireUserId(request)
     const { data } = await getAllUserData(userId)
     const { userBills } = await getUserBill(userId)
     const { userIncomes } = await getUserIncome(userId)
@@ -63,11 +63,11 @@ export default function Dashboard () {
     return (
 
         <>
-            <div className='h-full w-full col-span-1 md:col-start-2 md:col-end-6'>
+            <div className='h-full w-full col-span-1 row-span-1 row-start-1 row-end-2 md:col-start-3 md:col-end-6 md:row-span-1 md:row-start-1 md:row-end-3'>
                 <div className='flex flex-row items-center'>
                     <p className='underline underline-offset-8 text-lg md:text-3xl'>${ numberWithCommas(totalBills) }</p>
                     <Button onClick={ () => { setBillAction('bills') } } >
-                        <Link to='new' >
+                        <Link to='newOrUpdateBill' >
                             Add A Bill
                         </Link>
 
@@ -111,12 +111,12 @@ export default function Dashboard () {
 
 
             </div>
-            <div className='h-full col-span-1 md:col-start-7 md:col-end-12'>
+            <div className='h-full col-span-1 row-span-1 row-start-2 row-end-3 md:col-start-7 md:col-end-12 md:row-start-1 md:row-end-3'>
                 <div className='flex flex-row items-center'>
                     <Button onClick={ () => navigate(`income/${userId}`) } >All Incomes</Button>
                     <h3>Icome</h3>
                     <p className='underline underline-offset-8 text-lg md:text-3xl'>${ numberWithCommas(totalIncomes) }</p>
-                    <Link to='new' className='button'>
+                    <Link to='newOrUpdateIncome' className='button'>
                         Add an Income
                     </Link>
 

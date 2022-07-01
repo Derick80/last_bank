@@ -7,6 +7,7 @@ import type {
   RegisterForm
 } from './types.server'
 import bcrypt from 'bcryptjs'
+import { redirect } from '@remix-run/node'
 
 export const createUser = async (user: RegisterForm) => {
   const passwordHash = await bcrypt.hash(user.password, 10)
@@ -56,7 +57,7 @@ export const getUserBill = async (userId: string) => {
   return { userBills }
 }
 
-export const createBill = async (bill: BillForm, userId: string) => {
+export const createBill = async (bill: BillForm) => {
   const newUserBill = await prisma.bill.create({
     data: {
       source: bill.source,
@@ -65,10 +66,10 @@ export const createBill = async (bill: BillForm, userId: string) => {
       due_date: bill.due_date,
       paid: bill.paid,
       recurring: bill.recurring,
-      user: { connect: { id: userId } }
+      userId: bill.userId
     }
   })
-  return true
+  return { newUserBill }
 }
 export const updateBills = async (bill: BillForm, userId: string) => {
   const editedBill = await prisma.bill.update({
@@ -96,7 +97,7 @@ export const createIncomes = async (income: IncomeForm, userId: string) => {
       user: { connect: { id: userId } }
     }
   })
-  return true
+  return { newUserIncome }
 }
 export const updateIncomes = async (income: IncomeForm, userId: string) => {
   const editedIncome = await prisma.income.update({

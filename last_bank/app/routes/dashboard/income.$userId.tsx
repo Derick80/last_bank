@@ -2,7 +2,7 @@
 
 import { json, LoaderFunction, redirect } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
-import { formatISO } from 'date-fns'
+import IncomeItems from '~/components/income-card'
 import { getUserIncome } from '~/utils/users.server'
 
 // 1
@@ -29,15 +29,3 @@ export default function IncomeModel () {
     </>
 }
 
-function IncomeItems ({ item }: any) {
-    return (<ul>
-        <li>
-            { item.source }
-        </li>
-        <li>{ item.description }</li>
-        <li>{ item.amount }</li>
-        <li>{ formatISO(new Date(item.payment_date), { representation: 'date' }) }</li>
-        <li>{ item.received }</li>
-
-    </ul>)
-}
