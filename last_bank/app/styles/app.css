@@ -574,6 +574,14 @@ video {
   grid-column: span 1 / span 1;
 }
 
+.col-start-3 {
+  grid-column-start: 3;
+}
+
+.col-end-6 {
+  grid-column-end: 6;
+}
+
 .row-span-1 {
   grid-row: span 1 / span 1;
 }
@@ -594,6 +602,14 @@ video {
   margin: 0.5rem;
 }
 
+.m-1 {
+  margin: 0.25rem;
+}
+
+.m-4 {
+  margin: 1rem;
+}
+
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
@@ -602,6 +618,11 @@ video {
 .my-4 {
   margin-top: 1rem;
   margin-bottom: 1rem;
+}
+
+.my-2 {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
 .block {
@@ -636,6 +657,10 @@ video {
   width: 6rem;
 }
 
+.w-96 {
+  width: 24rem;
+}
+
 .flex-1 {
   flex: 1 1 0%;
 }
@@ -660,6 +685,14 @@ video {
   flex-direction: column;
 }
 
+.content-between {
+  align-content: space-between;
+}
+
+.content-evenly {
+  align-content: space-evenly;
+}
+
 .items-center {
   align-items: center;
 }
@@ -676,6 +709,10 @@ video {
   gap: 0.25rem;
 }
 
+.gap-y-4 {
+  row-gap: 1rem;
+}
+
 .overflow-hidden {
   overflow: hidden;
 }
@@ -690,6 +727,10 @@ video {
 
 .rounded-2xl {
   border-radius: 1rem;
+}
+
+.rounded-xl {
+  border-radius: 0.75rem;
 }
 
 .border-b {
@@ -728,6 +769,10 @@ video {
   padding: 1.5rem;
 }
 
+.p-2 {
+  padding: 0.5rem;
+}
+
 .px-3 {
   padding-left: 0.75rem;
   padding-right: 0.75rem;
@@ -746,6 +791,16 @@ video {
 .px-4 {
   padding-left: 1rem;
   padding-right: 1rem;
+}
+
+.py-4 {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.px-2 {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
 }
 
 .text-center {
@@ -775,6 +830,16 @@ video {
 .text-xl {
   font-size: 1.25rem;
   line-height: 1.75rem;
+}
+
+.text-3xl {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+}
+
+.text-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
 }
 
 .font-semibold {
@@ -876,6 +941,14 @@ video {
     grid-column-start: 2;
   }
 
+  .md\:col-start-6 {
+    grid-column-start: 6;
+  }
+
+  .md\:col-start-5 {
+    grid-column-start: 5;
+  }
+
   .md\:col-end-3 {
     grid-column-end: 3;
   }
@@ -890,6 +963,14 @@ video {
 
   .md\:col-end-12 {
     grid-column-end: 12;
+  }
+
+  .md\:col-end-2 {
+    grid-column-end: 2;
+  }
+
+  .md\:col-end-10 {
+    grid-column-end: 10;
   }
 
   .md\:row-start-1 {

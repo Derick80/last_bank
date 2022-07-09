@@ -8,9 +8,9 @@ import { Ibills2 } from '~/utils/types.server'
 import { getUserBill } from '~/utils/users.server'
 import { CardList } from './CardList'
 export const loader: LoaderFunction = async ({ request }) => {
-    const { userId, email } = await requireUserId(request)
+    const { userId } = await requireUserId(request)
 
-    const { userBills } = await getUserBill(userId, email)
+    const { userBills } = await getUserBill(userId)
 
     return json({ userBills, userId })
 }
