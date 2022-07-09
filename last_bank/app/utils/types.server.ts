@@ -58,6 +58,7 @@ export interface Bills {
     amount: number
     paid: boolean
     recurring: boolean
+    userId: string
   }
 }
 
@@ -83,7 +84,6 @@ export interface LoginForm {
   password: string
 }
 export interface BillForm {
-  id?: string
   userId: string
   source: string
   due_date: Date

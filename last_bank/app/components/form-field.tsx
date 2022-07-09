@@ -7,6 +7,7 @@ export interface FormFieldProps {
     value: any;
     onChange?: (...args: any) => any;
     error?: string;
+    className?: string;
 }
 
 export default function FormField ({
@@ -15,14 +16,15 @@ export default function FormField ({
     type,
     value,
     onChange = () => { },
-    error = ''
+    error = '',
+    className = '',
 }: FormFieldProps) {
     const [errorText, setErrorText] = useState(error);
 
     return (
-        <>
-            <label className="text-black-600 font-semibold" htmlFor={ htmlFor }>{ label }</label>
-            <input className="text-black"
+        < >
+            <label htmlFor={ htmlFor }>{ label }</label>
+            <input className={ className }
                 onChange={ (event) => {
                     onChange(event);
                     setErrorText('');

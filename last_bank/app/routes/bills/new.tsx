@@ -1,22 +1,28 @@
 import React, { useState } from 'react'
 import { ActionFunction, json, LoaderFunction } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
-import { getUser, register } from '~/utils/auth.server';
-import { validateEmail, validatePassword, validateName, validateAmount, validateBoolean, validateText, validateDate } from '~/utils/validators.server';
-import { createBill, updateBills, createIncomes, updateIncomes } from '~/utils/users.server';
-import { useActionData, useLoaderData } from '@remix-run/react';
+import { getUserId, requireUserId } from '~/utils/auth.server';
+import { validateAmount, validateBoolean, validateText } from '~/utils/validators.server';
+import { createBill } from '~/utils/users.server';
+import { Form, useActionData, useLoaderData } from '@remix-run/react';
 import Layout from '~/components/layout';
 import FormField from '~/components/form-field';
 
 
 
 export const loader: LoaderFunction = async ({ request }) => {
-    return await getUser(request) ? redirect('/') : null
+    const userId = await getUserId(request);
+    if (!userId) {
+        throw new Response("Unauthorized", { status: 401 });
+    }
+    return json({});
+
 }
 
 export const action: ActionFunction = async ({ request }) => {
+    const userId = await requireUserId(request);
+
     const form = await request.formData();
-    const action = form.get('_action');
     const source = form.get('source');
     const description = form.get('description');
     let amount = Number(form.get('amount'))
@@ -30,7 +36,7 @@ export const action: ActionFunction = async ({ request }) => {
 
 
     if (
-        typeof action !== 'string' ||
+
         typeof source !== 'string' ||
         typeof description !== 'string' ||
         typeof amount !== 'number'
@@ -44,14 +50,9 @@ export const action: ActionFunction = async ({ request }) => {
         description: validateText((description as string)),
         amount: validateAmount((amount as number)),
 
-        ...(action === 'createBills' || action === 'updateBills'
-            ? {
+        recurring: validateBoolean((recurring)),
+        paid: validateBoolean((paid))
 
-                recurring: validateBoolean((recurring)),
-                paid: validateBoolean((paid))
-
-            }
-            : {})
     };
 
     if (Object.values(errors).some(Boolean))
@@ -63,22 +64,17 @@ export const action: ActionFunction = async ({ request }) => {
             },
             { status: 400 }
         );
+    const bill = await createBill({
+        source,
+        description,
+        amount,
+        due_date,
+        paid,
+        recurring,
+        userId
+    }, userId);
 
-    switch (action) {
-        case 'createBills': {
-            return await createBill({ source, description, amount, recurring, paid, due_date }, userId);
-        }
-
-        case 'updateBills': {
-            amount = amount as number;
-
-
-            return await updateBills({ source, description, amount, recurring, paid, due_date }, userId);
-
-        }
-        default:
-            return json({ error: `Invalid Form Data` }, { status: 400 });
-    }
+    return redirect(`/bills/${bill}`);
 };
 
 
@@ -88,7 +84,6 @@ export default function New () {
     const { userId } = useLoaderData()
     const [formError, setFormError] = useState(actionData?.error || '')
     const [errors, setErrors] = useState(actionData?.errors || {})
-    const [action, setAction] = useState('')
 
     const [formData, setFormData] = useState({
         source: '',
@@ -110,52 +105,71 @@ export default function New () {
         }));
     };
     return (
-        <Layout>
-            <div>
-                <form method='post' className='rounded-2xl'>
-                    <FormField
-                        htmlFor=''
-                        label=''
-                        value={ formData.source }
-                        onChange={ (event: any) => handleInputChange(event, 'source') }
-                        error={ errors?.source } />
-                    <FormField
-                        htmlFor='description'
-                        label='description'
-                        value={ formData.description }
-                        onChange={ (event: any) => handleInputChange(event, 'description') }
-                        error={ errors?.description } />
-                    <FormField
-                        htmlFor='amount'
-                        label='amount'
-                        value={ formData.amount }
-                        onChange={ (event: any) => handleInputChange(event, 'amount') }
-                        error={ errors?.amount } />
-                    { action === 'createBills' || action === 'updateBills' ? (
-                        <>
-                            <FormField
-                                htmlFor='due_date'
-                                label='due_date'
-                                value={ formData.due_date }
-                                onChange={ (event: any) => handleInputChange(event, 'due_date') }
-                                error={ errors?.due_date } />
-                            <FormField
-                                htmlFor='reccuring'
-                                label='reccuring'
-                                value={ formData.recurring }
-                                onChange={ (event: any) => handleInputChange(event, 'reccuring') }
-                                error={ errors?.reccuring } />
-                            <FormField
-                                htmlFor='paid'
-                                label='paid'
-                                value={ formData.paid }
-                                onChange={ (event: any) => handleInputChange(event, 'paid') }
-                                error={ errors?.paid } />
-                        </>
-                    ) : null }
 
-                </form>
-            </div>
-        </Layout>
+        <div>
+            <Form method='post' className='rounded-2xl'>
+
+                <FormField
+                    className='text-black'
+                    htmlFor=''
+                    label='Source'
+                    value={ formData.source }
+                    onChange={ (event: any) => handleInputChange(event, 'source') }
+                    error={ errors?.source } />
+                <FormField
+                    className='text-black'
+
+                    htmlFor='description'
+                    label='description'
+                    value={ formData.description }
+                    onChange={ (event: any) => handleInputChange(event, 'description') }
+                    error={ errors?.description } />
+                <FormField
+                    className='text-black'
+
+                    htmlFor='amount'
+                    label='amount'
+                    type='number'
+                    value={ formData.amount }
+                    onChange={ (event: any) => handleInputChange(event, 'amount') }
+                    error={ errors?.amount } />
+
+
+                <FormField
+                    className='text-black'
+
+                    htmlFor='due_date'
+                    label='due_date'
+                    type='date'
+                    value={ formData.due_date }
+                    onChange={ (event: any) => handleInputChange(event, 'due_date') }
+                    error={ errors?.due_date } />
+                <FormField
+                    className='text-black'
+
+                    htmlFor='reccuring'
+                    label='reccuring'
+                    type='checkbox'
+                    value={ formData.recurring }
+                    onChange={ (event: any) => handleInputChange(event, 'reccuring') }
+                    error={ errors?.reccuring } />
+                <FormField
+                    className='text-black'
+
+                    htmlFor='paid'
+                    label='paid'
+                    type='checkbox'
+                    value={ formData.paid }
+                    onChange={ (event: any) => handleInputChange(event, 'paid') }
+                    error={ errors?.paid } />
+
+                <div className='w-full text-container'>
+                    <button type='submit' name='createBill' value='createBill' >
+                        Create a new Bill
+                    </button>
+                </div>
+            </Form>
+        </div>
+
     )
 }

@@ -99,67 +99,67 @@ export default function Login () {
         }));
     };
     return (
-        <Layout>
-            <div>
-                <button
-                    onClick={ () => setAction(action == 'login' ? 'register' : 'login') }
-                    className='absolute top-8 right-8 roundex-xl bg-light-blue font-semibold text-black-600 px-3 py-2 transition duration-300 ease-in-out hover: bg:light-orange-400'
-                >
-                    { action === 'login' ? 'Register' : 'Sign In' }
-                </button>
-                <h2 className='text-5xl font-extrabold'>Welcome to my bank</h2>
-                <p className='text-2xl font-bold'>
-                    { action === 'login' ? 'Please Login to give some Play' : 'Sign up to get Started' }
-                </p>
-                <form method='post' className='rounded-2xl'>
-                    <div className='text-xs font-semibold text-center tracking-wide text-red-500 w-full'>
-                        { formError }
-                    </div>
-                    <FormField
-                        htmlFor='email'
-                        label='email'
-                        value={ formData.email }
-                        onChange={ (event) => handleInputChange(event, 'email') }
-                        error={ errors?.email }
 
-                    />
-                    <FormField
-                        htmlFor='password'
-                        label='password'
-                        value={ formData.password }
-                        type='password'
-                        onChange={ (event) => handleInputChange(event, 'password') }
-                        error={ errors?.password }
+        <div>
+            <button
+                onClick={ () => setAction(action == 'login' ? 'register' : 'login') }
+                className='absolute top-8 right-8 roundex-xl bg-light-blue font-semibold text-black-600 px-3 py-2 transition duration-300 ease-in-out hover: bg:light-orange-400'
+            >
+                { action === 'login' ? 'Register' : 'Sign In' }
+            </button>
+            <h2 className='text-5xl font-extrabold'>Welcome to my bank</h2>
+            <p className='text-2xl font-bold'>
+                { action === 'login' ? 'Please Login to give some Play' : 'Sign up to get Started' }
+            </p>
+            <form method='post' className='rounded-2xl text-black'>
+                <div className='text-xs font-semibold text-center tracking-wide text-red-500 w-full'>
+                    { formError }
+                </div>
+                <FormField
+                    htmlFor='email'
+                    label='email'
+                    value={ formData.email }
+                    onChange={ (event) => handleInputChange(event, 'email') }
+                    error={ errors?.email }
 
-                    />
-                    { action !== 'login' ? (
-                        <>
-                            <FormField
-                                htmlFor='firstName'
-                                label='firstName'
-                                value={ formData.firstName }
-                                onChange={ (event) => handleInputChange(event, 'firstName') }
-                                error={ errors?.firstName }
+                />
+                <FormField
+                    htmlFor='password'
+                    label='password'
+                    value={ formData.password }
+                    type='password'
+                    onChange={ (event) => handleInputChange(event, 'password') }
+                    error={ errors?.password }
 
-                            />
-                            <FormField
-                                htmlFor='lastName'
-                                label='lastName'
-                                value={ formData.lastName }
-                                onChange={ (event) => handleInputChange(event, 'lastName') }
-                                error={ errors?.lastName }
+                />
+                { action !== 'login' ? (
+                    <>
+                        <FormField
+                            htmlFor='firstName'
+                            label='firstName'
+                            value={ formData.firstName }
+                            onChange={ (event) => handleInputChange(event, 'firstName') }
+                            error={ errors?.firstName }
 
-                            />
-                        </>
-                    ) : null }
-                    <div className='w-full text-container'>
-                        <button type='submit' name='_action' value={ action }>
-                            { action === 'login' ? 'Please log in' : 'Sign up' }
-                        </button>
-                    </div>
-                </form>
+                        />
+                        <FormField
+                            htmlFor='lastName'
+                            label='lastName'
+                            value={ formData.lastName }
+                            onChange={ (event) => handleInputChange(event, 'lastName') }
+                            error={ errors?.lastName }
 
-            </div>
-        </Layout>
+                        />
+                    </>
+                ) : null }
+                <div className='w-full text-container'>
+                    <button type='submit' name='_action' value={ action }>
+                        { action === 'login' ? 'Please log in' : 'Sign up' }
+                    </button>
+                </div>
+            </form>
+
+        </div>
+
     );
 }

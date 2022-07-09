@@ -57,7 +57,7 @@ export const getUserBill = async (userId: string) => {
   return { userBills }
 }
 
-export const createBill = async (bill: BillForm) => {
+export const createBill = async (bill: BillForm, userId: string) => {
   const newUserBill = await prisma.bill.create({
     data: {
       source: bill.source,
@@ -66,10 +66,11 @@ export const createBill = async (bill: BillForm) => {
       due_date: bill.due_date,
       paid: bill.paid,
       recurring: bill.recurring,
-      userId: bill.userId
+      user: { connect: { id: userId } },
+      userId: userId
     }
   })
-  return { newUserBill }
+  return redirect(`/dashboard`)
 }
 export const updateBills = async (bill: BillForm, userId: string) => {
   const editedBill = await prisma.bill.update({

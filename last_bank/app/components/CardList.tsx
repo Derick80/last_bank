@@ -11,6 +11,6 @@ type CardProps<Item, As extends React.ElementType> = {
 
 }
 export function CardList<Item, As extends React.ElementType> ({ items, renderItem, as, ...rest }: CardProps<Item, As> & Omit<React.ComponentPropsWithoutRef<As>, keyof CardProps<Item, As>>) {
-    const Component = as ?? "ul";
+    const Component = as ?? "div";
     return <Component { ...rest }>{ items.map(renderItem) }</Component>;
 }
