@@ -61,7 +61,23 @@ export interface Bills {
     userId: string
   }
 }
-
+export interface CreateBill {
+  source: string
+  due_date: Date
+  description: string
+  amount: number
+  paid: boolean
+  recurring: boolean
+  userId: string
+}
+export interface CreateIncome {
+  source: string
+  description: string
+  amount: number
+  payment_date: Date
+  received: boolean
+  userId: string
+}
 export interface Income {
   incomes: {
     id: string

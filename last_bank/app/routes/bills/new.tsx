@@ -1,27 +1,28 @@
-import React, { useState } from 'react'
-import { ActionFunction, json, LoaderFunction } from "@remix-run/node";
-import { redirect } from "@remix-run/node";
-import { getUserId, requireUserId } from '~/utils/auth.server';
-import { validateAmount, validateBoolean, validateText } from '~/utils/validators.server';
-import { createBill } from '~/utils/users.server';
+import type { ActionFunction, LoaderFunction } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node"
 import { Form, useActionData, useLoaderData } from '@remix-run/react';
-import Layout from '~/components/layout';
+import React, { useState } from 'react';
 import FormField from '~/components/form-field';
+import ToggleButton from '~/components/ToggleButton';
+import { getUserId, requireUserId } from '~/utils/auth.server';
+import { createBill } from '~/utils/bill.server';
+import { validateAmount, validateBoolean, validateText } from '~/utils/validators.server';
 
 
-
+interface Pick {
+    paid: boolean
+}
 export const loader: LoaderFunction = async ({ request }) => {
     const userId = await getUserId(request);
     if (!userId) {
         throw new Response("Unauthorized", { status: 401 });
     }
-    return json({});
+    return json({ userId });
 
 }
 
 export const action: ActionFunction = async ({ request }) => {
-    const userId = await requireUserId(request);
-
+    const userId = await requireUserId(request)
     const form = await request.formData();
     const source = form.get('source');
     const description = form.get('description');
@@ -50,8 +51,8 @@ export const action: ActionFunction = async ({ request }) => {
         description: validateText((description as string)),
         amount: validateAmount((amount as number)),
 
-        recurring: validateBoolean((recurring)),
-        paid: validateBoolean((paid))
+        recurring: validateBoolean((recurring as boolean)),
+        paid: validateBoolean((paid as boolean))
 
     };
 
@@ -72,9 +73,9 @@ export const action: ActionFunction = async ({ request }) => {
         paid,
         recurring,
         userId
-    }, userId);
+    });
 
-    return redirect(`/bills/${bill}`);
+    return redirect(`/bills/${bill.id}`);
 };
 
 
@@ -82,6 +83,8 @@ export const action: ActionFunction = async ({ request }) => {
 export default function New () {
     const actionData = useActionData()
     const { userId } = useLoaderData()
+    const [toggle, setToggle] = useState(false)
+
     const [formError, setFormError] = useState(actionData?.error || '')
     const [errors, setErrors] = useState(actionData?.errors || {})
 
@@ -91,19 +94,34 @@ export default function New () {
         amount: 0,
         due_date: '',
         recurring: false,
+        userId: userId,
         paid: false,
+
 
     });
 
+
     const handleInputChange = (
-        event: React.ChangeEvent<HTMLInputElement>,
+        event: React.ChangeEvent<HTMLInputElement | HTMLFormElement>,
         field: string
+
     ) => {
+
         setFormData((form) => ({
             ...form,
             [field]: event.target.value
         }));
     };
+
+    const triggerToggle = (
+        event: React.ChangeEvent<HTMLInputElement | HTMLFormElement>,
+        field: string) => {
+
+        setFormData((form) => ({
+            ...form,
+            [field]: event.target.checked
+        }));
+    }
     return (
 
         <div>
@@ -111,7 +129,7 @@ export default function New () {
 
                 <FormField
                     className='text-black'
-                    htmlFor=''
+                    htmlFor='source'
                     label='Source'
                     value={ formData.source }
                     onChange={ (event: any) => handleInputChange(event, 'source') }
@@ -147,24 +165,24 @@ export default function New () {
                 <FormField
                     className='text-black'
 
-                    htmlFor='reccuring'
-                    label='reccuring'
+                    htmlFor='recurring'
+                    label='recurring'
                     type='checkbox'
                     value={ formData.recurring }
-                    onChange={ (event: any) => handleInputChange(event, 'reccuring') }
-                    error={ errors?.reccuring } />
+                    onChange={ (event: any) => triggerToggle(event, 'recurring') }
+                    error={ errors?.recurring } />
+
                 <FormField
                     className='text-black'
-
                     htmlFor='paid'
                     label='paid'
                     type='checkbox'
                     value={ formData.paid }
-                    onChange={ (event: any) => handleInputChange(event, 'paid') }
+                    onChange={ (event: any) => triggerToggle(event, 'paid') }
                     error={ errors?.paid } />
 
                 <div className='w-full text-container'>
-                    <button type='submit' name='createBill' value='createBill' >
+                    <button type='submit'  >
                         Create a new Bill
                     </button>
                 </div>

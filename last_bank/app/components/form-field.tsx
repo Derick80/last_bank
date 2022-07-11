@@ -4,11 +4,15 @@ export interface FormFieldProps {
     htmlFor: string;
     label: string;
     type?: string;
-    value: any;
+    value?: any;
+    name?: string;
     onChange?: (...args: any) => any;
+    onClick?: (...args: any) => any,
+    checked?: boolean;
     error?: string;
     className?: string;
     labelClass?: string;
+    defaultValue?: string | boolean
 }
 
 export default function FormField ({
@@ -16,11 +20,14 @@ export default function FormField ({
     label,
     type,
     value,
+    checked,
+    onClick = () => { },
     onChange = () => { },
     error = '',
     className = 'text-black',
     labelClass
 }: FormFieldProps) {
+
     const [errorText, setErrorText] = useState(error);
 
     return (
@@ -31,6 +38,7 @@ export default function FormField ({
                     onChange(event);
                     setErrorText('');
                 } }
+
                 type={ type }
                 id={ htmlFor }
                 name={ htmlFor }

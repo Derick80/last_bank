@@ -1,5 +1,6 @@
 import React from 'react'
 interface Props {
+    defaultValue?: string
     children?: React.ReactNode;
     disabled?: boolean;
     onClick?: () => void;
@@ -13,7 +14,7 @@ interface Props {
 
 }
 
-export default function Button ({ onClick, className, children, type, ...props }: Props) {
+export default function Button ({ defaultValue, onClick, className, children, type, ...props }: Props) {
 
     return (
         <button className={ className } onClick={ onClick }>

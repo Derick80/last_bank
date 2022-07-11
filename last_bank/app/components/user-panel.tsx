@@ -19,13 +19,13 @@ export default function UserPanel () {
                         </span>
                     </Link>
 
-                    <Link to='/bills/new'>
+                    <Link to='/bills'>
                         <span className="material-symbols-outlined">
                             money_off
                         </span>
 
                     </Link>
-                    <Link to='/bills/new'>
+                    <Link to='/incomes'>
                         <span className="material-symbols-outlined">
                             attach_money
                         </span>

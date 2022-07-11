@@ -1,6 +1,6 @@
 import type { Bill, User } from '@prisma/client'
 import { prisma } from './prisma.server'
-import { BillForm } from './types.server'
+import { BillForm, CreateBill } from './types.server'
 export type { Bill } from '@prisma/client'
 
 export function getOneBill({
@@ -13,13 +13,13 @@ export function getOneBill({
     where: { id, userId }
   })
 }
-export async function getUserBill({ userId }: { userId: User['id'] }) {
-  const bills = await prisma.bill.findMany({
-    where: { userId },
+export async function getUserBill(userId: string) {
+  const userBills = await prisma.bill.findMany({
+    where: { userId: userId },
 
     orderBy: { due_date: 'desc' }
   })
-  return bills
+  return { userBills }
 }
 export function createBill({
   source,
@@ -29,18 +29,7 @@ export function createBill({
   paid,
   recurring,
   userId
-}: Pick<
-  Bill,
-  | 'source'
-  | 'description'
-  | 'amount'
-  | 'due_date'
-  | 'paid'
-  | 'recurring'
-  | 'userId'
-> & {
-  userId: User['id']
-}) {
+}: Omit<CreateBill, 'id' & 'userId'> & { userId: User['id'] }) {
   return prisma.bill.create({
     data: {
       source,
@@ -49,7 +38,7 @@ export function createBill({
       due_date,
       paid,
       recurring,
-      userId: userId,
+      userId,
       user: {
         connect: {
           id: userId
