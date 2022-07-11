@@ -50,16 +50,14 @@ export interface allData {
   }>[]
 }
 export interface Bills {
-  bills: {
-    id: string
-    source: string
-    due_date: Date
-    description: string
-    amount: number
-    paid: boolean
-    recurring: boolean
-    userId: string
-  }
+  id: string
+  source: string
+  due_date: Date
+  description: string
+  amount: number
+  paid: boolean
+  recurring: boolean
+  userId: string
 }
 export interface CreateBill {
   source: string

@@ -83,7 +83,6 @@ export const action: ActionFunction = async ({ request }) => {
 export default function New () {
     const actionData = useActionData()
     const { userId } = useLoaderData()
-    const [toggle, setToggle] = useState(false)
 
     const [formError, setFormError] = useState(actionData?.error || '')
     const [errors, setErrors] = useState(actionData?.errors || {})

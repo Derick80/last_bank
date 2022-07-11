@@ -52,3 +52,19 @@ export default function UserPanel () {
         </div >
     )
 }
+
+
+// {
+//     data.user ? (
+//         <div className="user-info">
+//             <span>{ `Hi ${data.user.username}` }</span>
+//             <form action="/logout" method="post">
+//                 <button type="submit" className="button">
+//                     Logout
+//                 </button>
+//             </form>
+//         </div>
+//     ) : (
+//     <Link to="/login">Login</Link>
+// )
+// }

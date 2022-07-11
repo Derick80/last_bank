@@ -3,42 +3,40 @@ import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { Form, useCatch, useLoaderData, useParams } from "@remix-run/react";
 import invariant from "tiny-invariant";
-import { requireUserId } from '~/utils/auth.server';
-import { deleteBill, getBill, getOneBill, getUserBill } from '~/utils/bill.server';
+import { getUserId, requireUserId } from '~/utils/auth.server';
+import { deleteBill, getOneBill } from '~/utils/bill.server';
 import type { Bills } from '~/utils/types.server';
 
 
 
 type LoaderData = {
     bill: Bill;
+    isOwner: boolean
 };
 
 export const loader: LoaderFunction = async ({ request, params }) => {
-    const userId = await requireUserId(request);
-
-    invariant(params.id, "BillId not found");
+    let userId = await getUserId(request)
     console.log(params.id);
-
-    const bill = await getOneBill({ id: params.id });
-
+    invariant(params.billId, "billId")
+    let bill = userId ? await getOneBill({ id: params.billId, userId }) : null
     if (!bill) {
-        throw new Response("Not Found", { status: 404 });
+        throw new Response("Bill not found", { status: 404 })
     }
-    return json<LoaderData>({ bill });
+    let data: LoaderData = { bill, isOwner: userId === bill.userId }
+    return json(data)
 };
 
 export const action: ActionFunction = async ({ request, params }) => {
     const userId = await requireUserId(request);
-    invariant(params.billId, "billId not found");
 
-    await deleteBill({ userId, id: params.billId });
+    await deleteBill({ userId, id: params.id });
 
-    return redirect("/bills");
+    return redirect("/");
 };
 
 export default function NoteDetailsPage () {
-    const data = useLoaderData() as LoaderData;
-    let { id } = useParams()
+    let data = useLoaderData<LoaderData>();
+    console.log(data);
     return (
         <div>
             <h3 className="text-2xl font-bold">{ data.bill.source }</h3>
@@ -56,18 +54,3 @@ export default function NoteDetailsPage () {
     );
 }
 
-export function ErrorBoundary ({ error }: { error: Error }) {
-    console.error(error);
-
-    return <div>An unexpected error occurred: { error.message }</div>;
-}
-
-export function CatchBoundary () {
-    const caught = useCatch();
-
-    if (caught.status === 404) {
-        return <div>Note not found</div>;
-    }
-
-    throw new Error(`Unexpected caught response with status: ${caught.status}`);
-}
