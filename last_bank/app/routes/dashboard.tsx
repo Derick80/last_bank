@@ -8,7 +8,7 @@ import {
 } from '@remix-run/react'
 import { formatISO } from 'date-fns'
 import React from 'react'
-import BillsCard from '~/components/bills-card'
+import BillsCard from '~/components/test-card'
 import IncomesCard from '~/components/incomes-card'
 import Layout from '~/components/layout'
 import UserPanel from '~/components/user-panel'
@@ -47,7 +47,7 @@ export default function DashboardRoute () {
         <Layout>
             <UserPanel profile={ user?.profile } />
             <Outlet />
-            <div className='h-full w-full row-span-1 row-start-1 col-span-1 md:col-start-3 md:col-end-6'>
+            <div className='h-full w-full row-span-1 row-start-1 col-span-1 bg-zinc-800 md:col-start-3 md:col-end-6'>
                 <div className='transactions-outlet' onClick={ () => navigate(`bill/new`) }>
                     Add a New BIll
                 </div>
@@ -66,7 +66,7 @@ export default function DashboardRoute () {
                 <BillsCard userBills={ userBills } />
 
             </div>
-            <div className='h-full w-full col-span-1 md:col-start-7 md:col-end-11'>
+            <div className='h-full w-full col-span-1 bg-zinc-800 md:col-start-7 md:col-end-11'>
                 <div className='new-outlet' onClick={ () => navigate(`income/create`) }>
 
 

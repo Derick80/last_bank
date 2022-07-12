@@ -1,4 +1,4 @@
-import { Profile } from '@prisma/client'
+import type { Profile } from '@prisma/client'
 import { Link, useNavigate } from '@remix-run/react'
 
 export default function UserPanel ({ profile }: { profile: Profile }) {

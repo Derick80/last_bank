@@ -40,7 +40,7 @@ export async function getUserBill(userId: string) {
   const userBills = await prisma.bill.findMany({
     where: { userId: userId },
 
-    orderBy: { due_date: 'desc' }
+    orderBy: { due_date: 'asc' }
   })
   return { userBills }
 }

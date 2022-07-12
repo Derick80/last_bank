@@ -5,6 +5,7 @@ import { numberWithCommas } from '~/utils/format'
 import { Bills, Ibills2 } from '~/utils/types.server'
 import Button from './Button'
 import { useNavigate } from '@remix-run/react'
+import { Bill } from '@prisma/client'
 
 
 type Props = {
@@ -12,6 +13,10 @@ type Props = {
 }
 export default function BillsCard ({ userBills }: Props) {
     const navigate = useNavigate()
+    const four = [Object.fromEntries(
+        Object.entries(userBills).slice(0, 5)
+    )]
+    console.log(four)
 
     return (
         <>{/* this is correct */ }
@@ -22,7 +27,7 @@ export default function BillsCard ({ userBills }: Props) {
 
                 >
 
-                    <div className='flex flex-row w-full justify-between'>
+                    <div className='flex flex-row p-3 mt-5 w-full justify-between'>
                         <div className='flex flex-col'>
                             <p className='underline'>Source </p>
                             <p>{ bill.source }</p>
