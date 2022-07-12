@@ -24,6 +24,7 @@ import {
 
 export const loader: LoaderFunction = async ({ request }) => {
     const userId = await requireUserId(request)
+    const user = await getUser(request)
     const { data } = await getAllUserData(userId)
     const { userBills } = await getUserBill(userId)
     const { userIncomes } = await getUserIncome(userId)
@@ -31,20 +32,20 @@ export const loader: LoaderFunction = async ({ request }) => {
     const realBills = sumTotals(userBills)
 
     const totalIncomes = sumTotals(userIncomes)
-    return json({ userId, userBills, userIncomes, data, totalIncomes, realBills, profile })
+    return json({ userId, userBills, userIncomes, data, totalIncomes, realBills, profile, user })
 }
 
 export default function DashboardRoute () {
     const navigate = useNavigate()
 
-    const { userId, userIncomes, data, userBills, totalIncomes, realBills, profile } = useLoaderData()
+    const { userId, userIncomes, data, userBills, totalIncomes, realBills, user } = useLoaderData()
 
 
 
 
     return (
         <Layout>
-            <UserPanel profile={ profile } />
+            <UserPanel profile={ user?.profile } />
             <Outlet />
             <div className='h-full w-full row-span-1 row-start-1 col-span-1 md:col-start-3 md:col-end-6'>
                 <div className='transactions-outlet' onClick={ () => navigate(`bill/new`) }>
@@ -57,8 +58,8 @@ export default function DashboardRoute () {
 
                     <Outlet />
                 </div>
-                <h3>Bills</h3>
-                <p className='underline underline-offset-8 text-lg md:text-3xl'>
+                <div className='font-mono text-3xl font-semibold'>Bills</div>
+                <p className='font-mono font-semibold underline decoration-green-700 underline-offset-8  text-lg md:text-3xl'>
                     ${ numberWithCommas(realBills) }
                 </p>
                 {/* this is correct */ }

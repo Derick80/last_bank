@@ -13,16 +13,16 @@ datasource db {
 }
 
 model User {
-  id        String    @id @unique @default(uuid())
-  email     String    @unique
+  id        String   @id @unique @default(uuid())
+  email     String   @unique
   password  String
   firstName String
   lastName  String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @default(now())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
   incomes   Income[]
   bills     Bill[]
-  profiles  Profile[]
+  profile   Profile?
 
 }
 
@@ -57,11 +57,11 @@ model Category {
 }
 
 model Profile {
-  id               String   @id @unique @default(uuid())
-  birthDay         DateTime
-  currentLocation  String
-  preferredPronoun String
-  occupation       String
-  user             User[]   @relation
-  userId           String
+  id               String    @id @unique @default(uuid())
+  birthDay         DateTime?
+  currentLocation  String?
+  preferredPronoun String?
+  occupation       String?
+  User             User?     @relation(fields: [userId], references: [id])
+  userId           String?   @unique
 }

@@ -31,7 +31,7 @@ export const getAllUserData = async (userId: string) => {
       email: true,
       bills: true,
       incomes: true,
-      profiles: true
+      profile: true
     }
   })
 

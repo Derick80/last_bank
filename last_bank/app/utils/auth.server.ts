@@ -112,7 +112,13 @@ export async function getUser(request: Request) {
       where: {
         id: userId
       },
-      select: { id: true, email: true }
+      select: {
+        id: true,
+        email: true,
+        firstName: true,
+        lastName: true,
+        profile: true
+      }
     })
     return user
   } catch {

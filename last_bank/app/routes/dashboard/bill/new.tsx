@@ -180,7 +180,7 @@ export default function New () {
                     error={ errors?.paid } />
 
                 <div className='w-full text-container'>
-                    <button type='submit'  >
+                    <button type='submit' className='roundex-xl bg-light-blue font-semibold px-3 py-2 transition duration-300 ease-in-out hover: bg:light-orange-400'>
                         Create a new Bill
                     </button>
                 </div>

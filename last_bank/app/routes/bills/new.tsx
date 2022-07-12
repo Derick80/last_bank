@@ -122,7 +122,7 @@ export default function New () {
     return (
 
         <div>
-            <Form method='post' className='rounded-2xl'>
+            <Form method='post' className=''>
 
                 <FormField
                     className='text-black'

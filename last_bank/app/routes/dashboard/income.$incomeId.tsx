@@ -1,7 +1,7 @@
-import { Income } from '@prisma/client'
-import { ActionFunction, json, LoaderFunction, redirect, Response } from '@remix-run/node'
+import type { Income } from '@prisma/client'
+import type { ActionFunction, LoaderFunction } from '@remix-run/node';
+import { json, redirect, Response } from '@remix-run/node'
 import { useActionData, useLoaderData, useParams } from '@remix-run/react'
-import { format, formatISO } from 'date-fns'
 import { useState } from 'react'
 import FormField from '~/components/form-field'
 import { Modal } from '~/components/modal'

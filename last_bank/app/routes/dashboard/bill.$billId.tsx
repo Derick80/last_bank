@@ -138,7 +138,8 @@ export default function BillModal () {
     }
     return (
         <Modal isOpen={ true } className='w-2/3 p-10'>
-            <form method='post' className='rounded-2xl'>
+
+            <form method='post' className='flex flex-col md:flex-row gap-y-2 md:gap-y-0 rounded-2xl'>
                 <FormField
                     className='text-black'
                     htmlFor='id'
