@@ -3,6 +3,9 @@ import { redirect } from '@remix-run/node'
 import { requireUserId } from '~/utils/auth.server'
 
 export const loader: LoaderFunction = async ({ request }) => {
-  await requireUserId(request)
-  return redirect('/dashboard')
+  let user = await requireUserId(request)
+  if (user) {
+    return redirect('/dashboard')
+  }
+  return redirect('/login')
 }

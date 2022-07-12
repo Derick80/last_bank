@@ -1,44 +1,43 @@
-import { ActionFunction, json, LoaderFunction, redirect } from '@remix-run/node';
-import { Form, useActionData, useLoaderData } from '@remix-run/react';
-import { useState } from 'react';
-import FormField from '~/components/form-field';
-import { Modal } from '~/components/modal';
-import ToggleButton from '~/components/ToggleButton';
-import { getUserId, requireUserId } from '~/utils/auth.server';
-import { createIncome } from '~/utils/income.server';
-import { validateText, validateAmount, validateBoolean } from '~/utils/validators.server';
+import { Income } from '@prisma/client'
+import { ActionFunction, json, LoaderFunction, redirect, Response } from '@remix-run/node'
+import { useActionData, useLoaderData, useParams } from '@remix-run/react'
+import { format, formatISO } from 'date-fns'
+import { useState } from 'react'
+import FormField from '~/components/form-field'
+import { Modal } from '~/components/modal'
+import { getUser, getUserId, requireUserId } from '~/utils/auth.server'
+import { getOneUserIncome, updateOneUserIncome } from '~/utils/income.server'
+import { validateText, validateAmount, validateBoolean } from '~/utils/validators.server'
 
-export const loader: LoaderFunction = async ({ request }) => {
-    const userId = await getUserId(request);
-    if (!userId) {
-        throw new Response("Unauthorized", { status: 401 });
+type LoaderData = {
+    income: Income
+    isOwner: boolean
+}
+export const loader: LoaderFunction = async ({ params, request },) => {
+    // 2
+    let userId = await getUserId(request)
+    const user = await getUser(request)
+
+    const incomeId = params.incomeId as string
+
+    if (typeof incomeId !== 'string') {
+        return redirect('/dashboard')
     }
-    return json({ userId });
 
+    let income = userId ? await getOneUserIncome({ id: incomeId, userId }) : null
+    if (!income) {
+        throw new Response('Income not found', { status: 404 })
+    }
+    let data: LoaderData = { income, isOwner: userId == income.userId }
+    return json({ data, user })
 }
 
-type ActionData = {
-    formError?: string;
-    fieldErrors?: {
-        source: string | undefined;
-        description: string | undefined;
-        amount: number | undefined;
-        payment_date: Date | undefined;
-        received: boolean | null;
-    };
-    fields?: {
-        source: string;
-        description: string;
-        amount: number;
-        payment_date: Date;
-        received: boolean;
+export const action: ActionFunction = async ({ request, params }) => {
+    const incomeId = params.listId as string;
 
-    };
-};
-export const action: ActionFunction = async ({ request }) => {
-    const userId = await requireUserId(request);
-
+    const userId = await requireUserId(request)
     let formData = await request.formData()
+    const id = formData.get('id')
     let source = formData.get('source')
     let description = formData.get('description')
     let amount = Number(formData.get('amount'))
@@ -47,7 +46,7 @@ export const action: ActionFunction = async ({ request }) => {
     let received = Boolean(formData.get('received'))
 
     if (
-
+        typeof id !== 'string' ||
         typeof source !== 'string' ||
         typeof description !== 'string' ||
         typeof userId !== 'string'
@@ -75,38 +74,36 @@ export const action: ActionFunction = async ({ request }) => {
             },
             { status: 400 }
         );
-    const income = await createIncome({
+
+    await updateOneUserIncome({
+        id: id,
+        userId: userId,
         source,
         description,
         amount,
-        payment_date,
         received,
-        userId: userId
+        payment_date,
+
 
     })
-    return redirect(`/incomes/${income.id}`)
-
+    return redirect('/dashboard')
 }
-
-
-export default function Create () {
-    const { userId } = useLoaderData()
+export default function IncomeModal () {
+    const { data, user } = useLoaderData()
     const actionData = useActionData()
-    console.log(userId);
-
-    const [formError, setFormError] = useState(actionData?.error || '')
     const [errors, setErrors] = useState(actionData?.errors || {})
-
     const [formData, setFormData] = useState({
-        source: '',
-        description: '',
-        amount: 0,
-        due_date: '',
-        received: false,
-        userId: userId,
+        id: data.income.id,
+        source: data.income.source,
+        description: data.income.description,
+        amount: data.income.amount,
+        payment_date: data.income.payment_date,
+        received: data.income.required,
+
 
 
     });
+
     const handleInputChange = (
         event: React.ChangeEvent<HTMLInputElement | HTMLFormElement>,
         field: string
@@ -128,9 +125,18 @@ export default function Create () {
             [field]: event.target.checked
         }));
     }
-    return (
-        <Modal isOpen={ true } className="w-2/3 p-10">            <form method='post' className='rounded-2xl'>
-
+    return <Modal isOpen={ true } className="w-2/3 p-10">
+        <form method='post' className='rounded-2xl'>
+            <FormField
+                className='text-black'
+                htmlFor='id'
+                label='Source'
+                name='id'
+                type='hidden'
+                value={ formData.id }
+                onChange={ (event: any) => handleInputChange(event, 'id') }
+                error={ errors?.id }
+            />
             <FormField
                 className='text-black'
                 htmlFor='source'
@@ -157,9 +163,9 @@ export default function Create () {
                 label='Amount'
                 name='amount'
                 type='number'
-                value={ formData.due_date }
-                onChange={ (event: any) => handleInputChange(event, 'due_date') }
-                error={ errors?.due_date }
+                value={ formData.amount }
+                onChange={ (event: any) => handleInputChange(event, 'amount') }
+                error={ errors?.amount }
             />
 
 
@@ -170,6 +176,7 @@ export default function Create () {
                 label='payment_date'
                 type='date'
                 name='payment_date'
+                value={ formData.payment_date }
                 onChange={ (event: any) => handleInputChange(event, 'payment_date') }
                 error={ errors?.payment_date }
 
@@ -188,10 +195,9 @@ export default function Create () {
 
             <div className='w-full text-container'>
                 <button type='submit'  >
-                    Create a new Income Source
+                    Save
                 </button>
             </div>
         </form>
-        </Modal>
-    )
+    </Modal>
 }

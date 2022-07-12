@@ -43,10 +43,7 @@ export default function App () {
         <Links />
       </head>
       <body >
-        <Layout>
-          <UserPanel />
-          <Outlet />
-        </Layout>
+        <Outlet />
 
         <ScrollRestoration />
         <Scripts />

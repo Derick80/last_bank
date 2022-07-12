@@ -19,6 +19,7 @@ export default function BillsCard ({ userBills }: Props) {
                 <div
                     className='flex flex-col items-center text-center text-base w-full md:max-w-screen-xl rounded overflow-hidden shadow-2xl m-2 py-2 md:text-lg'
                     key={ bill.id }
+
                 >
 
                     <div className='flex flex-row w-full justify-between'>
@@ -57,11 +58,11 @@ export default function BillsCard ({ userBills }: Props) {
                             <p className='uppercase'>{ String(bill.paid) }</p>
                         </div>
                     </div>
-                    <div>
+                    <div onClick={ () => navigate(`bill/${bill.id}`) }>
                         { ' ' }
-                        <Button onClick={ () => navigate(`/bills/${bill.id}`) }>
-                            Edit
-                        </Button>
+
+                        Edit
+
                     </div>
 
                 </div>

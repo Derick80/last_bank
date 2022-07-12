@@ -2,7 +2,7 @@ import { LoaderFunction, json } from '@remix-run/node'
 import { numberWithCommas } from '~/utils/format'
 
 import { useNavigate } from '@remix-run/react'
-import { formatISO } from 'date-fns'
+import { format, formatISO } from 'date-fns'
 import { Income } from '@prisma/client'
 
 
@@ -20,6 +20,7 @@ export default function IncomesCard ({ userIncomes }: Props) {
                 <div
                     className='flex flex-col items-center text-center text-base w-full md:max-w-screen-xl rounded overflow-hidden shadow-lg m-2 py-2 md:text-lg'
                     key={ income.id }
+                    onClick={ () => navigate(`income/${income.id}`) }
                 >
                     <div className='flex flex-row w-full justify-between'>
                         <div className='flex flex-col'>
@@ -29,9 +30,7 @@ export default function IncomesCard ({ userIncomes }: Props) {
                         <div className='flex flex-col'>
                             <p className='underline'>Due Date </p>
                             <p>
-                                { formatISO(new Date(income.payment_date), {
-                                    representation: 'date'
-                                }) }
+                                { format(new Date(income.payment_date), 'MM/dd/yyyy') }
                             </p>
                         </div>
                         <div className='flex flex-col'>

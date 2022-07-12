@@ -8,7 +8,8 @@ import { getUserId, requireUserId } from '~/utils/auth.server';
 import { createIncome } from '~/utils/income.server';
 import { validateText, validateAmount, validateBoolean } from '~/utils/validators.server';
 
-export const loader: LoaderFunction = async ({ request }) => {
+export const loader: LoaderFunction = async ({ request, params }) => {
+    const incomeId = params.listId as string;
     const userId = await getUserId(request);
     if (!userId) {
         throw new Response("Unauthorized", { status: 401 });
@@ -90,7 +91,7 @@ export const action: ActionFunction = async ({ request }) => {
 
 
 export default function Create () {
-    const { userId } = useLoaderData()
+    const userId = useLoaderData()
     const actionData = useActionData()
     console.log(userId);
 
@@ -101,7 +102,7 @@ export default function Create () {
         source: '',
         description: '',
         amount: 0,
-        due_date: '',
+        payment_date: '',
         received: false,
         userId: userId,
 
@@ -157,7 +158,7 @@ export default function Create () {
                 label='Amount'
                 name='amount'
                 type='number'
-                value={ formData.due_date }
+                value={ formData.amount }
                 onChange={ (event: any) => handleInputChange(event, 'due_date') }
                 error={ errors?.due_date }
             />

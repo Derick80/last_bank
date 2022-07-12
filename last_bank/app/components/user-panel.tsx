@@ -1,6 +1,7 @@
+import { Profile } from '@prisma/client'
 import { Link } from '@remix-run/react'
 
-export default function UserPanel () {
+export default function UserPanel ({ profile }: { profile: Profile[] }) {
     return (
         <div className="h-full w-full shadow col-span-1 row-span-1 row-start-3 row-end-3 md:col-start-1 md:col-end-2 md:row-start-1 md:row-end-3 md:shadow-md">
 
@@ -45,7 +46,13 @@ export default function UserPanel () {
                     </span>
 
                 </Link>
-
+                <form action="/logout" method="post">
+                    <button type="submit" className="rounded-xl bg-yellow-300 font-semibold text-blue-600 px-3 py-2 transition duration-300 ease-in-out hover:bg-yellow-400 hover:-translate-y-1"><span className="material-symbols-outlined">
+                        logout
+                    </span>
+                        Sign Out
+                    </button>
+                </form>
             </div>
 
 

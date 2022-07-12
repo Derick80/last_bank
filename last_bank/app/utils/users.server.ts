@@ -39,10 +39,10 @@ export const getAllUserData = async (userId: string) => {
 }
 
 export const getUserProfile = async (userId: string) => {
-  const userProfile = await prisma.user.findUnique({
+  const profile = await prisma.user.findUnique({
     where: {
       id: userId
     }
   })
-  return { userProfile }
+  return { profile }
 }

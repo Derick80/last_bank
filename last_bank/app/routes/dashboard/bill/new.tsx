@@ -3,6 +3,7 @@ import { json, redirect } from "@remix-run/node"
 import { Form, useActionData, useLoaderData } from '@remix-run/react';
 import React, { useState } from 'react';
 import FormField from '~/components/form-field';
+import { Modal } from '~/components/modal';
 import ToggleButton from '~/components/ToggleButton';
 import { getUserId, requireUserId } from '~/utils/auth.server';
 import { createBill } from '~/utils/bill.server';
@@ -121,7 +122,7 @@ export default function New () {
     }
     return (
 
-        <div>
+        <Modal isOpen={ true } className="w-2/3 p-10">
             <Form method='post' className='rounded-2xl'>
 
                 <FormField
@@ -184,7 +185,7 @@ export default function New () {
                     </button>
                 </div>
             </Form>
-        </div>
+        </Modal>
 
     )
 }
