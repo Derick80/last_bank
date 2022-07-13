@@ -1,38 +1,38 @@
-import type { ActionFunction, LoaderFunction } from "@remix-run/node";
+import type { ActionFunction, LoaderFunction } from "@remix-run/node"
 import { json, redirect } from "@remix-run/node"
-import { Form, useActionData, useLoaderData } from '@remix-run/react';
-import React, { useState } from 'react';
-import FormField from '~/components/form-field';
-import { Modal } from '~/components/modal';
-import ToggleButton from '~/components/ToggleButton';
-import { getUserId, requireUserId } from '~/utils/auth.server';
-import { createBill } from '~/utils/bill.server';
-import { validateAmount, validateBoolean, validateText } from '~/utils/validators.server';
+import { Form, useActionData, useLoaderData } from '@remix-run/react'
+import React, { useState } from 'react'
+import FormField from '~/components/form-field'
+import { Modal } from '~/components/modal'
+import ToggleButton from '~/components/ToggleButton'
+import { getUserId, requireUserId } from '~/utils/auth.server'
+import { createBill } from '~/utils/bill.server'
+import { validateAmount, validateBoolean, validateText } from '~/utils/validators.server'
 
 
 
 export const loader: LoaderFunction = async ({ request }) => {
-    const userId = await getUserId(request);
+    const userId = await getUserId(request)
     if (!userId) {
-        throw new Response("Unauthorized", { status: 401 });
+        throw new Response("Unauthorized", { status: 401 })
     }
-    return json({ userId });
+    return json({ userId })
 
 }
 
 export const action: ActionFunction = async ({ request }) => {
     const userId = await requireUserId(request)
-    const form = await request.formData();
-    const source = form.get('source');
-    const description = form.get('description');
+    const form = await request.formData()
+    const source = form.get('source')
+    const description = form.get('description')
     let amount = Number(form.get('amount'))
     // @ts-ignore
-    let due_date = new Date(form.get("due_date"));
+    let due_date = new Date(form.get("due_date"))
 
 
-    let recurring = Boolean(form.get('recurring'));
+    let recurring = Boolean(form.get('recurring'))
 
-    let paid = Boolean(form.get('paid'));
+    let paid = Boolean(form.get('paid'))
 
 
     if (
@@ -42,7 +42,7 @@ export const action: ActionFunction = async ({ request }) => {
         typeof amount !== 'number'
     ) {
         return json({ error: 'invalid form data', form: action }, { status: 400 })
-            ;
+
     }
 
     const errors = {
@@ -53,7 +53,7 @@ export const action: ActionFunction = async ({ request }) => {
         recurring: validateBoolean((recurring as boolean)),
         paid: validateBoolean((paid as boolean))
 
-    };
+    }
 
     if (Object.values(errors).some(Boolean))
         return json(
@@ -63,7 +63,7 @@ export const action: ActionFunction = async ({ request }) => {
                 form: action
             },
             { status: 400 }
-        );
+        )
     const bill = await createBill({
         source,
         description,
@@ -72,10 +72,10 @@ export const action: ActionFunction = async ({ request }) => {
         paid,
         recurring,
         userId
-    });
+    })
 
-    return redirect(`/bills/${bill.id}`);
-};
+    return redirect(`/bills/${bill.id}`)
+}
 
 
 
@@ -96,7 +96,7 @@ export default function New () {
         paid: false,
 
 
-    });
+    })
 
 
     const handleInputChange = (
@@ -108,8 +108,8 @@ export default function New () {
         setFormData((form) => ({
             ...form,
             [field]: event.target.value
-        }));
-    };
+        }))
+    }
 
     const triggerToggle = (
         event: React.ChangeEvent<HTMLInputElement | HTMLFormElement>,
@@ -118,31 +118,26 @@ export default function New () {
         setFormData((form) => ({
             ...form,
             [field]: event.target.checked
-        }));
+        }))
     }
     return (
 
-        <Modal isOpen={ true } className="w-2/3 p-10">
-            <Form method='post' className='rounded-2xl'>
+        <Modal isOpen={ true } className="w-2/3 p-10 flex flex-col">
+            <Form method='post' className='md:text-xl font-semibold'>
 
                 <FormField
-                    className='text-black'
                     htmlFor='source'
                     label='Source'
                     value={ formData.source }
                     onChange={ (event: any) => handleInputChange(event, 'source') }
                     error={ errors?.source } />
                 <FormField
-                    className='text-black'
-
                     htmlFor='description'
                     label='description'
                     value={ formData.description }
                     onChange={ (event: any) => handleInputChange(event, 'description') }
                     error={ errors?.description } />
                 <FormField
-                    className='text-black'
-
                     htmlFor='amount'
                     label='amount'
                     type='number'
@@ -152,8 +147,6 @@ export default function New () {
 
 
                 <FormField
-                    className='text-black'
-
                     htmlFor='due_date'
                     label='due_date'
                     type='date'
@@ -161,8 +154,6 @@ export default function New () {
                     onChange={ (event: any) => handleInputChange(event, 'due_date') }
                     error={ errors?.due_date } />
                 <FormField
-                    className='text-black'
-
                     htmlFor='recurring'
                     label='recurring'
                     type='checkbox'
@@ -171,7 +162,6 @@ export default function New () {
                     error={ errors?.recurring } />
 
                 <FormField
-                    className='text-black'
                     htmlFor='paid'
                     label='paid'
                     type='checkbox'
@@ -180,7 +170,7 @@ export default function New () {
                     error={ errors?.paid } />
 
                 <div className='w-full text-container'>
-                    <button type='submit' className='roundex-xl bg-light-blue font-semibold px-3 py-2 transition duration-300 ease-in-out hover: bg:light-orange-400'>
+                    <button type='submit' className='rounded-xl bg-blue-300 font-semibold text-blue-600 px-3 py-2 transition duration-300 ease-in-out hover: bg:light-orange-400'>
                         Create a new Bill
                     </button>
                 </div>

@@ -121,10 +121,9 @@ export default function Create () {
     }
     return (
         <Modal isOpen={ true } className='w-2/3 p-10 flex flex-col'>
-            { ' ' }
-            <form method='post' className='text-xl font-semibold'>
+
+            <form method='post' className='md:text-xl font-semibold'>
                 <FormField
-                    className='w-full p-2 rounded-xl my-2 text-black'
                     htmlFor='source'
                     label='Source'
                     name='source'
@@ -133,7 +132,6 @@ export default function Create () {
                     error={ errors?.source }
                 />
                 <FormField
-                    className='w-full p-2 rounded-xl my-2 text-black'
                     htmlFor='description'
                     label='Description'
                     name='description'
@@ -142,7 +140,6 @@ export default function Create () {
                     error={ errors?.description }
                 />
                 <FormField
-                    className='w-full p-2 rounded-xl my-2 text-black'
                     htmlFor='amount'
                     label='Amount'
                     name='amount'
@@ -153,7 +150,6 @@ export default function Create () {
                 />
 
                 <FormField
-                    className='w-full p-2 rounded-xl my-2 text-black'
                     htmlFor='payment_date'
                     label='Payment Date'
                     type='date'
@@ -163,7 +159,7 @@ export default function Create () {
                 />
 
                 <FormField
-                    className=' p-2 rounded-xl my-2 text-black'
+                    className=' p-2 rounded-xl my-2'
                     htmlFor='received'
                     label='Received'
                     type='checkbox'
@@ -172,7 +168,7 @@ export default function Create () {
                     error={ errors?.received }
                 />
             </form>
-            <div className='self-center'>
+            <div className='w-full text-container'>
                 <button
                     type='submit'
                     className='rounded-xl bg-blue-300 font-semibold text-blue-600 px-3 py-2 transition duration-300 ease-in-out hover: bg:light-orange-400'

@@ -8,7 +8,7 @@ import {
 } from '@remix-run/react'
 import { formatISO } from 'date-fns'
 import React from 'react'
-import BillsCard from '~/components/test-card'
+import BillsCard from '~/components/bills-card'
 import IncomesCard from '~/components/incomes-card'
 import Layout from '~/components/layout'
 import UserPanel from '~/components/user-panel'
@@ -47,7 +47,7 @@ export default function DashboardRoute () {
         <Layout>
             <UserPanel profile={ user?.profile } />
             <Outlet />
-            <div className='h-full w-full row-span-1 row-start-1 col-span-1 bg-zinc-800 md:col-start-3 md:col-end-6'>
+            <div className='h-full w-full row-span-1 row-start-1 col-span-1 md:col-start-3 md:col-end-7 md:row-auto'>
                 <div className='transactions-outlet' onClick={ () => navigate(`bill/new`) }>
                     Add a New BIll
                 </div>
@@ -58,27 +58,27 @@ export default function DashboardRoute () {
 
                     <Outlet />
                 </div>
-                <div className='font-mono text-3xl font-semibold'>Bills</div>
-                <p className='font-mono font-semibold underline decoration-green-700 underline-offset-8  text-lg md:text-3xl'>
+                <div className="text-2xl font-normal md:text-3xl">Bills</div>
+                <p className="font-Eczar font-normal text-3xl underline decoration-red-700 underline-offset-8  md:text-5xl">
                     ${ numberWithCommas(realBills) }
                 </p>
                 {/* this is correct */ }
                 <BillsCard userBills={ userBills } />
 
             </div>
-            <div className='h-full w-full col-span-1 bg-zinc-800 md:col-start-7 md:col-end-11'>
+            <div className='h-full w-full col-span-1 dark:bg-zinc-800 md:col-start-8 md:col-end-12'>
                 <div className='new-outlet' onClick={ () => navigate(`income/create`) }>
 
 
                     Create a New Income
                 </div>
-                <h3>Icome</h3>
-                <p className='underline underline-offset-8 text-lg md:text-3xl'>
+                <div className="text-2xl font-normal md:text-3xl">Income</div>
+                <p className="font-['Eczar'] font-normal text-3xl underline underline-offset-8 decoration-green-700  md:text-5xl">
                     ${ numberWithCommas(totalIncomes) }
                 </p>
                 {/* this is correct */ }
                 <IncomesCard userIncomes={ userIncomes } />
             </div>
-        </Layout>
+        </Layout >
     )
 }

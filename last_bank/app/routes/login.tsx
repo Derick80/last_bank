@@ -105,12 +105,12 @@ export default function Login () {
                         ? 'Please Login to view your Accounts'
                         : 'Sign up to get Started' }
                 </p>
-                <form method='post' className='rounded-2xl p-6 w-96'>
+                <form method='post' className='md:text-xl font-semibold'>
                     <div className='text-xs font-semibold text-center tracking-wide text-red-500 w-full'>
                         { formError }
                     </div>
                     <FormField
-                        className='text-black font-semibold w-full p-2 rounded-xl my-2'
+                        className='border'
                         htmlFor='email'
                         label='Email'
                         labelClass='text-2xl font-semibold my-2 px-2'
@@ -119,7 +119,8 @@ export default function Login () {
                         error={ errors?.email }
                     />
                     <FormField
-                        className='text-black font-semibold w-full p-2 rounded-xl my-2'
+                        className='border'
+
                         htmlFor='password'
                         label='Password'
                         labelClass='text-2xl font-semibold my-2 px-2'
@@ -131,7 +132,8 @@ export default function Login () {
                     { action !== 'login' ? (
                         <>
                             <FormField
-                                className='text-black font-semibold w-full p-2 rounded-xl my-2'
+                                className='border'
+
                                 htmlFor='firstName'
                                 label='FirstName'
                                 labelClass='text-2xl font-semibold my-2 px-2'
@@ -140,7 +142,8 @@ export default function Login () {
                                 error={ errors?.firstName }
                             />
                             <FormField
-                                className='text-black font-semibold w-full p-2 rounded-xl my-2'
+                                className='border'
+
                                 htmlFor='lastName'
                                 label='LastName'
                                 labelClass='text-2xl font-semibold my-2 px-2'
@@ -158,7 +161,7 @@ export default function Login () {
                 </form>
                 <button
                     onClick={ () => setAction(action == 'login' ? 'register' : 'login') }
-                    className='rounded-xl bg-light-blue font-semibold px-3 py-2 transition duration-300 ease-in-out hover: bg:light-orange-400'
+                    className='rounded-xl dark:bg-light-blue font-semibold px-3 py-2 transition duration-300 ease-in-out hover:dark:bg-light-orange-400'
                 >
                     { action === 'login' ? 'Register' : 'Sign In' }
                 </button>{ ' ' }

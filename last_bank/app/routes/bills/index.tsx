@@ -12,7 +12,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 export default function Index () {
     const { userId, userBills } = useLoaderData()
-    console.log("userId: ", userId, "userBills: ", userBills);
+    console.log("userId: ", userId, "userBills: ", userBills)
 
 
 

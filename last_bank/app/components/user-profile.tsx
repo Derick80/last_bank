@@ -8,7 +8,7 @@ interface ProfileProps {
 export default function UserProfile ({ profile, onClick, className }: ProfileProps) {
     return (
         <div
-            className={ `${className} cursor-pointer bg-gray-400 rounded-full flex justify-center items-center` }
+            className={ `${className} cursor-pointer dark:bg-gray-400 rounded-full flex justify-center items-center` }
             onClick={ onClick }
         >
             { profile && <h2>

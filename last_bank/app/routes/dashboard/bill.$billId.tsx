@@ -1,8 +1,8 @@
-import type { Bill } from '@prisma/client';
+import type { Bill } from '@prisma/client'
 import type {
     ActionFunction,
     LoaderFunction
-} from '@remix-run/node';
+} from '@remix-run/node'
 import {
     json,
     redirect,
@@ -141,7 +141,6 @@ export default function BillModal () {
 
             <form method='post' className='flex flex-col md:flex-row gap-y-2 md:gap-y-0 rounded-2xl'>
                 <FormField
-                    className='text-black'
                     htmlFor='id'
                     label=''
                     name='id'

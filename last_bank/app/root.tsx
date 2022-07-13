@@ -18,12 +18,7 @@ export const links: LinksFunction = () => {
     {
       rel: "stylesheet",
       href: styles,
-    }, { rel: "stylesheet", href: 'https://fonts.googleapis.com/icon?family=Material+Icons' },
-    {
-      rel: "stylesheet", href: 'https://fonts.googleapis.com/icon?family=Material+Icons+Outlined'
-    },
-    { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" },
-
+    }
   ]
 }
 
@@ -37,7 +32,7 @@ export const meta: MetaFunction = () => ({
 
 export default function App () {
   return (
-    <html lang="en" className='h-screen w-full bg-zinc-900 text-white'>
+    <html lang="en" className='font-Condensed h-screen w-full dark:bg-zinc-900 dark:text-white'>
       <head>
         <Meta />
         <Links />
