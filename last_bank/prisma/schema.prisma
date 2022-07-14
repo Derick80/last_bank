@@ -1,5 +1,6 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
+//Prisma Client returns all DateTime as ISO 8601-formatted strings.
 
 generator client {
   provider = "prisma-client-js"

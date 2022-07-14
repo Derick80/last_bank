@@ -3,7 +3,7 @@ import { useActionData } from "@remix-run/react";
 
 import { json, redirect } from "@remix-run/node";
 import React, { useState } from "react";
-import FormField from "~/components/form-field";
+import FormField from "~/components/shared/form-field";
 import Layout from "~/components/layout";
 import { getUser, login, register } from "~/utils/auth.server";
 import {
@@ -11,7 +11,7 @@ import {
   validateName,
   validatePassword,
 } from "~/utils/validators.server";
-import Button from "~/components/Button";
+import Button from "~/components/shared/Button";
 
 export const loader: LoaderFunction = async ({ request }) => {
   return (await getUser(request)) ? redirect("/dashboard") : null;

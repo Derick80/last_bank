@@ -1,6 +1,7 @@
 import { LoaderFunction, json } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
 import BillsCard from "~/components/bills-card";
+import GlobalCard from "~/components/test-card";
 import { requireUserId } from "~/utils/auth.server";
 import { getUserBill } from "~/utils/bill.server";
 export const loader: LoaderFunction = async ({ request }) => {
@@ -16,7 +17,7 @@ export default function Index() {
   return (
     <div className="h-full w-full row-span-1 row-start-1 col-span-1 md:col-start-3 md:col-end-12">
       index bills index route
-      <BillsCard userBills={userBills} />
+      <GlobalCard data={userBills} isBill={true} />
       <Outlet />
     </div>
   );

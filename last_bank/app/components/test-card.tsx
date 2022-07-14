@@ -1,33 +1,83 @@
+import type { Bill, Income } from "@prisma/client";
 import { useNavigate } from "@remix-run/react";
-import { format, formatISO } from "date-fns";
+import { format } from "date-fns";
 import { useState } from "react";
 import { numberWithCommas } from "~/utils/format";
-import { Bills } from "~/utils/types.server";
-import Card from "./Card";
+import dateFormat, { masks } from "dateformat";
 
-type Props = {
-  userBills: Bills[];
-};
-export default function BillsCard({ userBills }: Props) {
+import Icon from "./shared/Icon";
+
+import Tooltip from "./ToolTip";
+
+type ICard =
+  | {
+      data: Bill;
+      isBill: true;
+    }
+  | {
+      data: Income;
+      isBill: false;
+    };
+
+export default function GlobalCard({ data, isBill }: ICard) {
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
-  const dataForDisplay = show ? userBills : userBills.slice(0, 4);
+  const [expand, setExpand] = useState(false);
+  let ttMessage = !expand ? "Expand to See More" : "Collapse";
+  const myRoute = isBill ? "bill" : "income";
 
   return (
-    <>
-      <div>
-        <button onClick={() => setShow(!show)}>
-          {show ? "show less" : "show more"}
-        </button>
+    <div className="flex flex-row w-full justify-between p-3">
+      <div className="flex flex-col place-items-start">
+        <div>{data.source}</div>
+        {isBill === true ? (
+          <>
+            <div> {dateFormat(data.due_date, "mmm d")}</div>
+          </>
+        ) : (
+          <>
+            <div>{dateFormat(data.payment_date, "MMM d")}</div>
+            <div>Acount Ending... {data.accountNumber}</div>
+          </>
+        )}
       </div>
-      {dataForDisplay.map((bill) => (
-        <div
-          className="flex flex-col items-center text-center text-base w-full dark:bg-zinc-700 md:max-w-screen-xl rounded overflow-hidden shadow-2xl transition duration-500 ease-in-out delay-150 transform hover:-translate-y-1 hover:scale-110 mb-2 mt-2  py-2 md:text-lg"
-          key={bill.id}
-        >
-          <Card bill={bill} />
-        </div>
-      ))}
-    </>
+      <div className="font-['Eczar'] text-base flex flex-row items-center md:text-xl">
+        ${numberWithCommas(data.amount)}
+        <Tooltip message="Edit">
+          <div
+            className="items-center p-2"
+            onClick={() => navigate(`${myRoute}/${data.id}`)}
+          >
+            <span className="material-symbols-outlined">edit</span>
+          </div>
+        </Tooltip>
+      </div>
+      <div
+        className="text-center absolute bottom-0 left-1/2"
+        onClick={() => setExpand(!expand)}
+      >
+        <Tooltip message={ttMessage}>
+          {expand ? <Icon icon="expand_less" /> : <Icon icon="expand_more" />}
+        </Tooltip>
+      </div>
+      {expand === true ? (
+        <>
+          {isBill === true ? (
+            <div className="flex flex-col place-items-start">
+              <div>{data.paid}</div>
+              <div>{data.description}</div>
+            </div>
+          ) : (
+            <div className="flex flex-col place-items-start">
+              <div>{data.received}</div>
+              <div>{data.description}</div>
+            </div>
+          )}
+        </>
+      ) : null}
+    </div>
   );
 }
+
+// isBill ? <Card bill={ item } /> :
+//   <CardIncome income={ item } />

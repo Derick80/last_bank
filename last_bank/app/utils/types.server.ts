@@ -1,64 +1,15 @@
-export interface allUserData {
-  allUserData: Array<{
-    id: string;
-    email: string;
-    firstName: string;
-    lastName: string;
-    password: string;
-    bills: {
-      id: string;
-      source: string;
-      due_date: Date;
-      description: string;
-      amount: number;
-      paid: boolean;
-      recurring: boolean;
-    };
-    incomes: {
-      id: string;
-      source: string;
-      description: string;
-      amount: number;
-      payment_date: Date;
-      received: boolean;
-    };
-  }>;
-}
+import type { Bill, Income } from "@prisma/client";
 
-export interface allData {
-  allData: Array<{
-    id: string;
-    email: string;
+export type ICard =
+  | {
+      data: Bill;
+      isBill: true;
+    }
+  | {
+      data: Income;
+      isBill: false;
+    };
 
-    bills: {
-      id: string;
-      source: string;
-      due_date: Date;
-      description: string;
-      amount: number;
-      paid: boolean;
-      recurring: boolean;
-    };
-    incomes: {
-      id: string;
-      source: string;
-      description: string;
-      amount: number;
-      payment_date: Date;
-      received: boolean;
-    };
-  }>[];
-}
-export interface Bills {
-  id: string;
-  source: string;
-  due_date: Date;
-  description: string;
-  amount: number;
-  paid: boolean;
-  recurring: boolean;
-  userId: string;
-}
 export interface CreateBill {
   source: string;
   due_date: Date;
@@ -76,16 +27,7 @@ export interface CreateIncome {
   received: boolean;
   userId: string;
 }
-export interface Income {
-  incomes: {
-    id: string;
-    source: string;
-    description: string;
-    amount: number;
-    payment_date: Date;
-    received: boolean;
-  };
-}
+
 export interface RegisterForm {
   email: string;
   password: string;
@@ -115,27 +57,3 @@ export interface IncomeForm {
   payment_date: Date;
   received: boolean;
 }
-
-export type Ibills2 = {
-  children?:
-    | React.ReactNode[]
-    | React.ReactElement[]
-    | JSX.Element[]
-    | JSX.Element
-    | React.ReactChild
-    | React.ReactChild[];
-  id: string;
-  source: string;
-  due_date: Date;
-  description: string;
-  amount: number;
-  paid: boolean;
-  recurring: boolean;
-};
-
-export interface IAction {}
-export type Action =
-  | { type: "createBills"; value: string }
-  | { type: "updateBills"; value: string }
-  | { type: "createIncomes"; value: string }
-  | { type: "updateIncomes"; value: string };
