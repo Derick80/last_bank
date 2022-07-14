@@ -17,14 +17,14 @@ export default function CardIncome ({ income }: Props) {
                 <div>{ income.source }</div>
                 <div>Due { format(new Date(income.payment_date), "MMMM, do") }</div>
             </div>
-            <div className="font-['Eczar'] text-base flex flex-row items-center justify-center">
+            <div className="font-['Eczar'] text-base flex flex-row items-center md:text-xl">
                 ${ numberWithCommas(income.amount) }
                 <Tooltip message="Edit Income">
                     <div
-                        className="flex self-center"
+                        className="items-center p-2"
                         onClick={ () => navigate(`income/${income.id}`) }
                     >
-                        <span className="material-symbols-outlined">chevron_right</span>
+                        <span className="material-symbols-outlined">edit</span>
                     </div>
                 </Tooltip>
             </div>
