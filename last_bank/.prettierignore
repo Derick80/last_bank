@@ -1,0 +1,9 @@
+cache
+build
+public/build
+prisma/seed.ts
+prisma/dev.db
+# Ignore artifacts:
+build
+coverage
+.env

@@ -1,17 +1,17 @@
-import type { Bill, User } from '@prisma/client'
-import { prisma } from './prisma.server'
-import { BillForm, CreateBill } from './types.server'
-export type { Bill } from '@prisma/client'
+import type { Bill, User } from "@prisma/client";
+import { prisma } from "./prisma.server";
+import { BillForm, CreateBill } from "./types.server";
+export type { Bill } from "@prisma/client";
 
 export function getOneUserBIll({
   id,
-  userId
-}: Pick<Bill, 'id'> & {
-  userId: User['id']
+  userId,
+}: Pick<Bill, "id"> & {
+  userId: User["id"];
 }) {
   return prisma.bill.findFirst({
-    where: { id, userId }
-  })
+    where: { id, userId },
+  });
 }
 
 export async function updateOneUserBill({
@@ -22,7 +22,7 @@ export async function updateOneUserBill({
   amount,
   due_date,
   recurring,
-  paid
+  paid,
 }: Bill) {
   await prisma.bill.update({
     where: { id: id },
@@ -32,17 +32,17 @@ export async function updateOneUserBill({
       amount: amount,
       due_date: due_date,
       recurring: recurring,
-      paid: paid
-    }
-  })
+      paid: paid,
+    },
+  });
 }
 export async function getUserBill(userId: string) {
   const userBills = await prisma.bill.findMany({
     where: { userId: userId },
 
-    orderBy: { due_date: 'asc' }
-  })
-  return { userBills }
+    orderBy: { due_date: "asc" },
+  });
+  return { userBills };
 }
 export function createBill({
   source,
@@ -51,8 +51,8 @@ export function createBill({
   due_date,
   paid,
   recurring,
-  userId
-}: Omit<CreateBill, 'id' & 'userId'> & { userId: User['id'] }) {
+  userId,
+}: Omit<CreateBill, "id" & "userId"> & { userId: User["id"] }) {
   return prisma.bill.create({
     data: {
       source,
@@ -64,18 +64,18 @@ export function createBill({
       userId,
       user: {
         connect: {
-          id: userId
-        }
-      }
-    }
-  })
+          id: userId,
+        },
+      },
+    },
+  });
 }
 
 export function deleteBill({
   id,
-  userId
-}: Pick<Bill, 'userId' | 'id'> & { userId: User['id'] }) {
+  userId,
+}: Pick<Bill, "userId" | "id"> & { userId: User["id"] }) {
   return prisma.bill.deleteMany({
-    where: { id, userId }
-  })
+    where: { id, userId },
+  });
 }

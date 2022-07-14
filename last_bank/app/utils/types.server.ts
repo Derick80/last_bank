@@ -1,119 +1,119 @@
 export interface allUserData {
   allUserData: Array<{
-    id: string
-    email: string
-    firstName: string
-    lastName: string
-    password: string
+    id: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+    password: string;
     bills: {
-      id: string
-      source: string
-      due_date: Date
-      description: string
-      amount: number
-      paid: boolean
-      recurring: boolean
-    }
+      id: string;
+      source: string;
+      due_date: Date;
+      description: string;
+      amount: number;
+      paid: boolean;
+      recurring: boolean;
+    };
     incomes: {
-      id: string
-      source: string
-      description: string
-      amount: number
-      payment_date: Date
-      received: boolean
-    }
-  }>
+      id: string;
+      source: string;
+      description: string;
+      amount: number;
+      payment_date: Date;
+      received: boolean;
+    };
+  }>;
 }
 
 export interface allData {
   allData: Array<{
-    id: string
-    email: string
+    id: string;
+    email: string;
 
     bills: {
-      id: string
-      source: string
-      due_date: Date
-      description: string
-      amount: number
-      paid: boolean
-      recurring: boolean
-    }
+      id: string;
+      source: string;
+      due_date: Date;
+      description: string;
+      amount: number;
+      paid: boolean;
+      recurring: boolean;
+    };
     incomes: {
-      id: string
-      source: string
-      description: string
-      amount: number
-      payment_date: Date
-      received: boolean
-    }
-  }>[]
+      id: string;
+      source: string;
+      description: string;
+      amount: number;
+      payment_date: Date;
+      received: boolean;
+    };
+  }>[];
 }
 export interface Bills {
-  id: string
-  source: string
-  due_date: Date
-  description: string
-  amount: number
-  paid: boolean
-  recurring: boolean
-  userId: string
+  id: string;
+  source: string;
+  due_date: Date;
+  description: string;
+  amount: number;
+  paid: boolean;
+  recurring: boolean;
+  userId: string;
 }
 export interface CreateBill {
-  source: string
-  due_date: Date
-  description: string
-  amount: number
-  paid: boolean
-  recurring: boolean
-  userId: string
+  source: string;
+  due_date: Date;
+  description: string;
+  amount: number;
+  paid: boolean;
+  recurring: boolean;
+  userId: string;
 }
 export interface CreateIncome {
-  source: string
-  description: string
-  amount: number
-  payment_date: Date
-  received: boolean
-  userId: string
+  source: string;
+  description: string;
+  amount: number;
+  payment_date: Date;
+  received: boolean;
+  userId: string;
 }
 export interface Income {
   incomes: {
-    id: string
-    source: string
-    description: string
-    amount: number
-    payment_date: Date
-    received: boolean
-  }
+    id: string;
+    source: string;
+    description: string;
+    amount: number;
+    payment_date: Date;
+    received: boolean;
+  };
 }
 export interface RegisterForm {
-  email: string
-  password: string
-  firstName: string
-  lastName: string
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
 }
 
 export interface LoginForm {
-  email: string
-  password: string
+  email: string;
+  password: string;
 }
 export interface BillForm {
-  userId: string
-  source: string
-  due_date: Date
-  description: string
-  amount: number
-  paid: boolean
-  recurring: boolean
+  userId: string;
+  source: string;
+  due_date: Date;
+  description: string;
+  amount: number;
+  paid: boolean;
+  recurring: boolean;
 }
 
 export interface IncomeForm {
-  id?: string
-  source: string
-  description: string
-  amount: number
-  payment_date: Date
-  received: boolean
+  id?: string;
+  source: string;
+  description: string;
+  amount: number;
+  payment_date: Date;
+  received: boolean;
 }
 
 export type Ibills2 = {
@@ -123,19 +123,19 @@ export type Ibills2 = {
     | JSX.Element[]
     | JSX.Element
     | React.ReactChild
-    | React.ReactChild[]
-  id: string
-  source: string
-  due_date: Date
-  description: string
-  amount: number
-  paid: boolean
-  recurring: boolean
-}
+    | React.ReactChild[];
+  id: string;
+  source: string;
+  due_date: Date;
+  description: string;
+  amount: number;
+  paid: boolean;
+  recurring: boolean;
+};
 
 export interface IAction {}
 export type Action =
-  | { type: 'createBills'; value: string }
-  | { type: 'updateBills'; value: string }
-  | { type: 'createIncomes'; value: string }
-  | { type: 'updateIncomes'; value: string }
+  | { type: "createBills"; value: string }
+  | { type: "updateBills"; value: string }
+  | { type: "createIncomes"; value: string }
+  | { type: "updateIncomes"; value: string };
