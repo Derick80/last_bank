@@ -27,35 +27,32 @@ model User {
 }
 
 model Income {
-  id            String   @id @unique @default(uuid())
-  source        String
-  description   String
-  amount        Float
-  payment_date  DateTime
-  accountNumber Int?
+  id           String   @id @unique @default(uuid())
+  source       String
+  description  String
+  amount       Float
+  payment_date DateTime
 
-  received  Boolean  @default(false)
-  category  String
-  updatedAt DateTime @default(now())
-  user      User[]   @relation
-  userId    String
+
+  received Boolean @default(false)
+
+  user   User[] @relation
+  userId String
 
 }
 
 model Bill {
-  id            String   @id @unique @default(uuid())
-  source        String
-  description   String
-  amount        Float
-  due_date      DateTime
-  accountNumber Int?
-  recurring     Boolean  @default(true)
-  paid          Boolean  @default(false)
-  category      String
-  updatedAt     DateTime @default(now())
-  user          User[]   @relation
-  userId        String
-  tags          Tag?     @default(NEED)
+  id          String   @id @unique @default(uuid())
+  source      String
+  description String
+  amount      Float
+  due_date    DateTime
+
+  recurring Boolean @default(true)
+  paid      Boolean @default(false)
+
+  user   User[] @relation
+  userId String
 }
 
 model Profile {
@@ -67,11 +64,4 @@ model Profile {
   updatedAt        DateTime  @default(now())
   User             User?     @relation(fields: [userId], references: [id])
   userId           String?   @unique
-}
-
-enum Tag {
-  NEED
-  WANT
-  REPAYMENT
-
 }
