@@ -25,7 +25,7 @@ export default function CardIncome ({ item, isBill }: Props) {
       <div className="flex flex-col place-items-start">
         <div className="uppercase">{ item.source }</div>
         <div>Due { format(new Date(item.due_date), "MMMM, do") }</div>
-        { item.tags && item.tags.map((tag) => (<div key={ tag.id } className="" >{ tag.tagName }</div>)) }
+        { item.tags && item.tags.map((tag) => (<div key={ tag.id } className="rounded-md bg-red-400 p-1 uppercase font-bold" >{ tag.tagName }</div>)) }
         { expand === true ? (
           <>
             <div className="flex flex-row justify-center">

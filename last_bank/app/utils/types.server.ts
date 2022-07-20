@@ -7,15 +7,6 @@ export interface IBill extends Bill {
 export interface IIncome extends Income {
   tags: Tag[];
 }
-export type ICard =
-  | {
-      data: Bill;
-      isBill: true;
-    }
-  | {
-      data: Income;
-      isBill: false;
-    };
 
 export interface CreateOrEditBill {
   source: string;
