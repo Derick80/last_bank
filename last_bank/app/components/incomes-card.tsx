@@ -1,35 +1,50 @@
-import { Income } from "@prisma/client";
-import { useNavigate } from "@remix-run/react";
-import { format, formatISO } from "date-fns";
-import { useState } from "react";
-import { numberWithCommas } from "~/utils/format";
-import { Bills } from "~/utils/types.server";
-import Card from "./Card";
-import CardIncome from "./CardIncome";
+import { Income, Bill } from "@prisma/client"
+import { Link, useNavigate } from "@remix-run/react"
+import { format, formatISO } from "date-fns"
+import { useState } from "react"
+import { numberWithCommas } from "~/utils/format"
+import { Bills } from "~/utils/types.server"
+import Card from "./Card"
+import CardIncome from "./CardIncome"
 
 type Props = {
-  userIncomes: Income[];
-};
-export default function IncomesCard({ userIncomes }: Props) {
-  const [show, setShow] = useState(false);
-  const navigate = useNavigate();
-  const dataForDisplay = show ? userIncomes : userIncomes.slice(0, 4);
-
+  userData: Income[] | Bill[]
+  isBill: boolean
+  totalMonthly: number
+}
+export default function IncomesCard ({ userData, isBill, totalMonthly }: Props) {
+  const [show, setShow] = useState(false)
+  const navigate = useNavigate()
+  const dataForDisplay = show ? userData : userData.slice(0, 4)
+  const newRouteLink = isBill ? "bill" : "income"
+  const viewAllLink = isBill ? "bills" : "incomes"
   return (
     <>
       <div>
-        <button onClick={() => setShow(!show)}>
-          {show ? "show less" : "show more"}
+        { " " }
+        <Link to={ `${viewAllLink}/` } className="button">
+          see all bills
+        </Link>
+      </div>
+      <div onClick={ () => navigate(`${newRouteLink}/create}`) }>
+        Add a New BIll
+      </div>
+
+      <p className="font-Eczar font-normal text-3xl underline decoration-red-700 underline-offset-8  md:text-5xl">
+        ${ numberWithCommas(totalMonthly) }
+      </p>
+      <div>
+        <button onClick={ () => setShow(!show) }>
+          { show ? "show less" : "show more" }
         </button>
       </div>
-      {dataForDisplay.map((income) => (
+      { dataForDisplay.map((item) => (
         <div
           className="flex flex-col items-center text-center text-base w-full dark:bg-zinc-700 md:max-w-screen-xl rounded overflow-hidden shadow-2xl transition duration-500 ease-in-out delay-150 transform hover:-translate-y-1 hover:scale-110 mb-2 mt-2 py-2 md:text-lg"
-          key={income.id}
+          key={ item.id }
         >
-          <CardIncome income={income} />
-        </div>
-      ))}
+          <CardIncome item={ item } isBill={ isBill } /></div>
+      )) }
     </>
-  );
+  )
 }

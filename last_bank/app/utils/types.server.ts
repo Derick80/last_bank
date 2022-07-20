@@ -1,5 +1,8 @@
-import type { Bill, Income } from "@prisma/client";
-
+import type { Bill, Income, User } from "@prisma/client";
+export interface IUser extends User {
+  bills: { bills: Bill };
+  incomes: Income;
+}
 export type ICard =
   | {
       data: Bill;
@@ -10,21 +13,26 @@ export type ICard =
       isBill: false;
     };
 
-export interface CreateBill {
+export interface CreateOrEditBill {
   source: string;
-  due_date: Date;
-  description: string;
+  accountNumber: number;
   amount: number;
-  paid: boolean;
+  due_date: Date;
   recurring: boolean;
+  paid: boolean;
+  description: string;
+
   userId: string;
 }
-export interface CreateIncome {
+export interface CreateOrEditIncome {
   source: string;
-  description: string;
+  accountNumber: number;
   amount: number;
-  payment_date: Date;
-  received: boolean;
+  due_date: Date;
+  recurring: boolean;
+  paid: boolean;
+  description: string;
+
   userId: string;
 }
 
@@ -38,22 +46,4 @@ export interface RegisterForm {
 export interface LoginForm {
   email: string;
   password: string;
-}
-export interface BillForm {
-  userId: string;
-  source: string;
-  due_date: Date;
-  description: string;
-  amount: number;
-  paid: boolean;
-  recurring: boolean;
-}
-
-export interface IncomeForm {
-  id?: string;
-  source: string;
-  description: string;
-  amount: number;
-  payment_date: Date;
-  received: boolean;
 }

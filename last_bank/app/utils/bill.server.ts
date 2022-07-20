@@ -18,21 +18,23 @@ export async function updateOneUserBill({
   id,
   userId,
   source,
-  description,
+  accountNumber,
   amount,
   due_date,
   recurring,
   paid,
-}: Bill) {
+  description,
+}: Partial<Bill>) {
   await prisma.bill.update({
     where: { id: id },
     data: {
       source: source,
-      description: description,
+      accountNumber: accountNumber,
       amount: amount,
       due_date: due_date,
       recurring: recurring,
       paid: paid,
+      description: description,
     },
   });
 }
@@ -46,21 +48,23 @@ export async function getUserBill(userId: string) {
 }
 export function createBill({
   source,
-  description,
+  accountNumber,
   amount,
   due_date,
-  paid,
   recurring,
+  paid,
+  description,
   userId,
 }: Omit<CreateBill, "id" & "userId"> & { userId: User["id"] }) {
   return prisma.bill.create({
     data: {
       source,
-      description,
+      accountNumber,
       amount,
       due_date,
-      paid,
       recurring,
+      paid,
+      description,
       userId,
       user: {
         connect: {

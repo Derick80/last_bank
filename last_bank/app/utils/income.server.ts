@@ -1,31 +1,36 @@
 import type { Income, User } from "@prisma/client";
 import { prisma } from "./prisma.server";
-import { CreateIncome, IncomeForm } from "./types.server";
+import type { CreateIncome } from "./types.server";
 
 export const getUserIncome = async (userId: string) => {
   const userIncomes = await prisma.income.findMany({
     where: { userId: userId },
     orderBy: {
-      payment_date: "asc",
+      due_date: "asc",
     },
   });
   return { userIncomes };
 };
 export async function createIncome({
   source,
-  description,
+  accountNumber,
   amount,
-  payment_date,
-  received,
+  due_date,
+  recurring,
+  paid,
+  description,
   userId,
 }: CreateIncome) {
   return prisma.income.create({
     data: {
       source,
-      description,
+      accountNumber,
+
       amount,
-      payment_date,
-      received,
+      due_date,
+      recurring,
+      paid,
+      description,
       userId,
       user: {
         connect: { id: userId },
@@ -49,21 +54,23 @@ export const updateOneUserIncome = async ({
   id,
   userId,
   source,
+  accountNumber,
   description,
   amount,
-  received,
-  payment_date,
-}: Income) => {
+  paid,
+  due_date,
+}: Partial<Income>) => {
   await prisma.income.update({
     where: {
       id: id,
     },
     data: {
       source: source,
+      accountNumber: accountNumber,
       description: description,
       amount: amount,
-      payment_date: payment_date,
-      received: received,
+      due_date: due_date,
+      paid: paid,
     },
   });
 };

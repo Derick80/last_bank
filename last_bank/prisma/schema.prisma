@@ -14,46 +14,61 @@ datasource db {
 }
 
 model User {
-  id        String   @id @unique @default(uuid())
-  email     String   @unique
+  id        String    @id @unique @default(uuid())
+  email     String    @unique
   password  String
   firstName String
   lastName  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now())
   incomes   Income[]
   bills     Bill[]
+  accounts  Account[]
   profile   Profile?
 
 }
 
 model Income {
-  id           String   @id @unique @default(uuid())
-  source       String
-  description  String
-  amount       Float
-  payment_date DateTime
-
-
-  received Boolean @default(false)
-
-  user   User[] @relation
-  userId String
-
+  id            String   @id @unique @default(uuid())
+  source        String
+  accountNumber Int?
+  amount        Float
+  due_date      DateTime
+  recurring     Boolean  @default(true)
+  paid          Boolean  @default(false)
+  description   String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @default(now())
+  user          User[]   @relation
+  userId        String
 }
 
 model Bill {
-  id          String   @id @unique @default(uuid())
-  source      String
-  description String
-  amount      Float
-  due_date    DateTime
+  id            String   @id @unique @default(uuid())
+  source        String
+  accountNumber Int?
+  amount        Float
+  due_date      DateTime
+  recurring     Boolean  @default(true)
+  paid          Boolean  @default(false)
+  description   String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @default(now())
+  user          User[]   @relation
+  userId        String
+}
 
-  recurring Boolean @default(true)
-  paid      Boolean @default(false)
-
-  user   User[] @relation
-  userId String
+model Account {
+  id            String   @id @unique @default(uuid())
+  source        String
+  accountNumber Int?
+  accountType   String
+  amount        Float
+  description   String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @default(now())
+  user          User[]   @relation
+  userId        String
 }
 
 model Profile {
@@ -62,6 +77,7 @@ model Profile {
   currentLocation  String?
   preferredPronoun String?
   occupation       String?
+  createdAt        DateTime  @default(now())
   updatedAt        DateTime  @default(now())
   User             User?     @relation(fields: [userId], references: [id])
   userId           String?   @unique

@@ -1,13 +1,6 @@
 import { prisma } from "./prisma.server";
-import type {
-  allData,
-  allUserData,
-  BillForm,
-  IncomeForm,
-  RegisterForm,
-} from "./types.server";
+import type { RegisterForm } from "./types.server";
 import bcrypt from "bcryptjs";
-import { redirect } from "@remix-run/node";
 
 export const createUser = async (user: RegisterForm) => {
   const passwordHash = await bcrypt.hash(user.password, 10);
@@ -26,11 +19,10 @@ export const getAllUserData = async (userId: string) => {
   const data = await prisma.user.findUnique({
     where: { id: userId },
 
-    select: {
-      id: true,
-      email: true,
+    include: {
       bills: true,
       incomes: true,
+      accounts: true,
       profile: true,
     },
   });
@@ -44,5 +36,5 @@ export const getUserProfile = async (userId: string) => {
       id: userId,
     },
   });
-  return { profile };
+  return profile;
 };

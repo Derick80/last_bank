@@ -34,8 +34,9 @@ async function seed() {
     data: {
       userId: user.id,
       source: "Tempus",
+      accountNumber: 1234,
       description: "Paycheck 1",
-      payment_date: "2022-07-01T19:00:52Z",
+      due_date: "2022-07-01T19:00:52Z",
       amount: 2938,
     },
   });
@@ -43,8 +44,10 @@ async function seed() {
     data: {
       userId: user.id,
       source: "Tempus",
+      accountNumber: 1234,
+
       description: "Paycheck 2",
-      payment_date: "2022-07-15T19:00:52Z",
+      due_date: "2022-07-15T19:00:52Z",
       amount: 2938,
     },
   });
@@ -52,8 +55,10 @@ async function seed() {
     data: {
       userId: user.id,
       source: "Sean",
+      accountNumber: 1234,
+
       description: "Monthly Rent",
-      payment_date: "2022-07-01T19:00:52Z",
+      due_date: "2022-07-01T19:00:52Z",
       amount: 200,
     },
   });
@@ -61,6 +66,8 @@ async function seed() {
     data: {
       userId: user.id,
       source: "Mortgage",
+      accountNumber: 1234,
+
       description: "debit",
       due_date: "2022-07-01T19:00:52Z",
       amount: 1580.79,
@@ -70,6 +77,8 @@ async function seed() {
     data: {
       userId: user.id,
       source: "Goolge Drive",
+      accountNumber: 1234,
+
       description: "debit",
       due_date: "2022-07-04T19:00:52Z",
       amount: 10.71,
@@ -79,6 +88,8 @@ async function seed() {
     data: {
       userId: user.id,
       source: "car",
+      accountNumber: 1234,
+
       description: "debit",
       due_date: "2022-07-01T19:00:52Z",
       amount: 588,
@@ -88,6 +99,8 @@ async function seed() {
     data: {
       userId: user.id,
       source: "StateFarm",
+      accountNumber: 1234,
+
       description: "debit",
       due_date: "2022-07-01T19:00:52Z",
       amount: 193,
@@ -97,6 +110,8 @@ async function seed() {
     data: {
       userId: user.id,
       source: "Credit One Bank 6588",
+      accountNumber: 6588,
+
       description: "debit",
       due_date: "2022-07-05T19:00:52Z",
       amount: 98,
@@ -106,6 +121,8 @@ async function seed() {
     data: {
       userId: user.id,
       source: "Google Credit Sync",
+      accountNumber: 1234,
+
       description: "debit",
       due_date: "2022-07-05T19:00:52Z",
       amount: 103.58,
@@ -115,6 +132,8 @@ async function seed() {
     data: {
       userId: user.id,
       source: "Dropbox",
+      accountNumber: 1234,
+
       description: "debit",
       due_date: "2022-07-05T19:00:52Z",
       amount: 13,
@@ -124,6 +143,8 @@ async function seed() {
     data: {
       userId: user.id,
       source: "GoogleFi",
+      accountNumber: 1234,
+
       description: "debit",
       due_date: "2022-07-06T19:00:52Z",
       amount: 76.15,
@@ -133,6 +154,8 @@ async function seed() {
     data: {
       userId: user.id,
       source: "Bank of America CC (autopay)",
+      accountNumber: 1234,
+
       description: "debit",
       due_date: "2022-07-09T19:00:52Z",
       amount: 25,
@@ -142,6 +165,8 @@ async function seed() {
     data: {
       userId: user.id,
       source: "ComEd",
+      accountNumber: 1234,
+
       description: "debit",
       due_date: "2022-07-10T19:00:52Z",
       amount: 124,
@@ -151,6 +176,8 @@ async function seed() {
     data: {
       userId: user.id,
       source: "Ikea Card -commenity-",
+      accountNumber: 1234,
+
       description: "debit",
       due_date: "2022-07-10T19:00:52Z",
       amount: 46,
@@ -160,6 +187,8 @@ async function seed() {
     data: {
       userId: user.id,
       source: "Amazon Credit",
+      accountNumber: 1234,
+
       description: "debit",
       due_date: "2022-07-13T19:00:52Z",
       amount: 127,
@@ -169,6 +198,8 @@ async function seed() {
     data: {
       userId: user.id,
       source: "HoA",
+      accountNumber: 1234,
+
       description: "debit",
       due_date: "2022-07-15T19:00:52Z",
       amount: 428.14,
@@ -178,6 +209,8 @@ async function seed() {
     data: {
       userId: user.id,
       source: "New York Times",
+      accountNumber: 1234,
+
       description: "debit",
       due_date: "2022-07-11T19:00:52Z",
       amount: 28,
@@ -187,6 +220,8 @@ async function seed() {
     data: {
       userId: user.id,
       source: "Chase (9746) 13.49% IR",
+      accountNumber: 9746,
+
       description: "debit",
       due_date: "2022-07-15T19:00:52Z",
       amount: 181,
@@ -196,6 +231,7 @@ async function seed() {
     data: {
       userId: user.id,
       source: "Chase (0127) 21.49% APR",
+      accountNumber: 0o127,
       description: "debit",
       due_date: "2022-07-15T19:00:52Z",
       amount: 439,
@@ -205,6 +241,8 @@ async function seed() {
     data: {
       userId: user.id,
       source: "Chase (7761) 21.49% APR",
+      accountNumber: 7761,
+
       description: "debit",
       due_date: "2022-07-15T19:00:52Z",
       amount: 54,
@@ -214,6 +252,8 @@ async function seed() {
     data: {
       userId: user.id,
       source: "Credit one bank 2721",
+      accountNumber: 2721,
+
       description: "debit",
       due_date: "2022-07-17T19:00:52Z",
       amount: 38,
@@ -223,6 +263,8 @@ async function seed() {
     data: {
       userId: user.id,
       source: "AMEX",
+      accountNumber: 1234,
+
       description: "debit",
       due_date: "2022-07-17T19:00:52Z",
       amount: 223,
@@ -232,6 +274,8 @@ async function seed() {
     data: {
       userId: user.id,
       source: "AES",
+      accountNumber: 1234,
+
       description: "debit",
       due_date: "2022-07-17T19:00:52Z",
       amount: 236.89,
@@ -241,6 +285,8 @@ async function seed() {
     data: {
       userId: user.id,
       source: "Capital One (auto pay) 16.4% APR",
+      accountNumber: 1234,
+
       description: "debit",
       due_date: "2022-07-18T19:00:52Z",
       amount: 220,
@@ -250,6 +296,8 @@ async function seed() {
     data: {
       userId: user.id,
       source: "Navient",
+      accountNumber: 1234,
+
       description: "debit",
       due_date: "2022-07-18T19:00:52Z",
       amount: 182.37,
@@ -259,6 +307,8 @@ async function seed() {
     data: {
       userId: user.id,
       source: "best buy",
+      accountNumber: 1234,
+
       description: "debit",
       due_date: "2022-07-22T19:00:52Z",
       amount: 50,
@@ -268,6 +318,8 @@ async function seed() {
     data: {
       userId: user.id,
       source: "PayPal",
+      accountNumber: 1234,
+
       description: "debit",
       due_date: "2022-07-24T19:00:52Z",
       amount: 120,
@@ -277,6 +329,7 @@ async function seed() {
     data: {
       userId: user.id,
       source: "GreatLakes",
+      accountNumber: 1234,
       description: "debit",
       due_date: "2022-07-26T19:00:52Z",
       amount: 0,
@@ -304,6 +357,8 @@ async function seed() {
     data: {
       userId: user.id,
       source: "Netflix",
+      accountNumber: 1234,
+
       description: "debit",
       due_date: "2022-07-28T19:00:52Z",
       amount: 20,
@@ -313,6 +368,8 @@ async function seed() {
     data: {
       userId: user.id,
       source: "Target Red",
+      accountNumber: 1234,
+
       description: "debit",
       due_date: "2022-07-28T19:00:52Z",
       amount: 70,
@@ -322,9 +379,21 @@ async function seed() {
     data: {
       userId: user.id,
       source: "Peoples Gas",
+      accountNumber: 1234,
+
       description: "debit",
       due_date: "2022-07-28T19:00:52Z",
       amount: 75,
+    },
+  });
+  await prisma.account.create({
+    data: {
+      userId: user.id,
+      source: "Checking Account",
+      accountNumber: 1234,
+      amount: 2760,
+      accountType: "Checking Account",
+      description: "Checking Account",
     },
   });
   console.log("data has been seeded");

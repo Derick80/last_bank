@@ -117,6 +117,8 @@ export async function getUser(request: Request) {
         email: true,
         firstName: true,
         lastName: true,
+        accounts: true,
+
         profile: true,
       },
     });
