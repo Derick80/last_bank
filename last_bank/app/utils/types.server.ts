@@ -1,7 +1,11 @@
-import type { Bill, Income, User } from "@prisma/client";
-export interface IUser extends User {
-  bills: { bills: Bill };
+import type { Bill, Income, Tag, User } from "@prisma/client";
+export interface IBill extends Bill {
+  tags: Tag[];
   incomes: Income;
+}
+
+export interface IIncome extends Income {
+  tags: Tag[];
 }
 export type ICard =
   | {

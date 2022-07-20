@@ -2,10 +2,11 @@ import { Income, Bill } from "@prisma/client"
 import { Link, useNavigate } from "@remix-run/react"
 import { useState } from "react"
 import { numberWithCommas } from "~/utils/format"
+import { IBill, IIncome } from '~/utils/types.server'
 import CardIncome from "./CardIncome"
 
 type Props = {
-  userData: Income[] | Bill[]
+  userData: IIncome[] | IBill[]
   isBill: boolean
   totalMonthly: number
 }

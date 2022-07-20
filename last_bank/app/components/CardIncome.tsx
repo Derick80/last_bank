@@ -3,20 +3,50 @@ import { useNavigate } from "@remix-run/react"
 import { format } from "date-fns"
 import { useState } from "react"
 import { numberWithCommas } from "~/utils/format"
+import { IBill, IIncome } from '~/utils/types.server'
 import Tooltip from "./shared/ToolTip"
 type Props = {
-  item: Income | Bill
+  item: IIncome | IBill
   isBill: boolean
 }
 export default function CardIncome ({ item, isBill }: Props) {
   const navigate = useNavigate()
   const [expand, setExpand] = useState(false)
   let ttMessage = !expand ? "Expand to See More" : "Collapse"
+
+  // let tag = item.tags.map((tag) => {
+  //   return tag
+  // })
+  // console.log(tag)
+
   return (
     <div className="flex flex-row static w-full justify-between p-3">
+
       <div className="flex flex-col place-items-start">
-        <div>{ item.source }</div>
+        <div className="uppercase">{ item.source }</div>
         <div>Due { format(new Date(item.due_date), "MMMM, do") }</div>
+        { item.tags && item.tags.map((tag) => (<div key={ tag.id } className="" >{ tag.tagName }</div>)) }
+        { expand === true ? (
+          <>
+            <div className="flex flex-row justify-center">
+
+              <div className="flex flex-col place-items-start">
+                <div>{ item.recurring === true ? <div className='flex flex-row justify-center'>Recurring<span className="material-symbols-outlined">
+                  check_box
+                </span></div> : <div className='flex flex-row justify-center'>Recurring <span className="material-symbols-outlined">
+                  check_box_outline_blank
+                </span> </div> }</div>
+                <div>{ item.paid === true ? <div className='flex flex-row justify-center'>paid<span className="material-symbols-outlined">
+                  check_box
+                </span></div> : <div className='flex flex-row justify-center'>paid <span className="material-symbols-outlined">
+                  check_box_outline_blank
+                </span> </div> }</div>
+
+              </div>
+              <div className='flex flex-row justify-center'>{ item.description }</div>
+            </div>
+          </>
+        ) : null }
       </div>
       <div className="font-['Eczar'] text-base flex flex-row items-center md:text-xl">
         ${ numberWithCommas(item.amount) }
@@ -47,15 +77,7 @@ export default function CardIncome ({ item, isBill }: Props) {
         </Tooltip>
       </div>
 
-      { expand === true ? (
-        <>
-          <div className="flex flex-col place-items-start">
-            { " " }
-            <div>{ item.paid }</div>
-            <div>{ item.description }</div>
-          </div>
-        </>
-      ) : null }
+
     </div>
   )
 }
