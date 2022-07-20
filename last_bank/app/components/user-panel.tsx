@@ -1,9 +1,9 @@
-import type { Profile } from "@prisma/client";
-import { Link, useNavigate } from "@remix-run/react";
-import Tooltip from "./shared/ToolTip";
+import type { Profile } from "@prisma/client"
+import { Link, useNavigate } from "@remix-run/react"
+import Tooltip from "./shared/ToolTip"
 
-export default function UserPanel({ profile }: { profile: Profile }) {
-  const navigate = useNavigate();
+export default function UserPanel ({ profile }: { profile: Profile }) {
+  const navigate = useNavigate()
 
   return (
     <div className="h-full w-full shadow col-span-1 row-span-1 row-start-3 row-end-3 md:col-start-1 md:col-end-3 md:row-auto md:shadow-xl md:opacity-70 md:p-4">
@@ -11,7 +11,9 @@ export default function UserPanel({ profile }: { profile: Profile }) {
         <div className="flex flex-col items-center py-4">
           <Tooltip message="DashBoard Home">
             <Link to="/">
-              <span className="material-symbols-outlined">home</span>
+              <span className="material-symbols-outlined">
+                dashboard
+              </span>
             </Link>
           </Tooltip>
 
@@ -35,7 +37,7 @@ export default function UserPanel({ profile }: { profile: Profile }) {
         </div>
 
         <Tooltip message="Profile">
-          <div onClick={() => navigate(`profile`)}>
+          <div onClick={ () => navigate(`profile`) }>
             <span className="material-symbols-outlined">person</span>
           </div>
         </Tooltip>
@@ -52,7 +54,7 @@ export default function UserPanel({ profile }: { profile: Profile }) {
         </Tooltip>
       </div>
     </div>
-  );
+  )
 }
 
 // {

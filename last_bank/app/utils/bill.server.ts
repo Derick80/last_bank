@@ -11,6 +11,7 @@ export function getOneUserBIll({
 }) {
   return prisma.bill.findFirst({
     where: { id, userId },
+    include: { tags: true },
   });
 }
 
@@ -24,7 +25,7 @@ export async function updateOneUserBill({
   recurring,
   paid,
   description,
-}: Partial<Bill>) {
+}: Omit<Bill, "createdAt" | "updatedAt">) {
   await prisma.bill.update({
     where: { id: id },
     data: {

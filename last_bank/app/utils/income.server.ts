@@ -25,7 +25,6 @@ export async function createIncome({
     data: {
       source,
       accountNumber,
-
       amount,
       due_date,
       recurring,
