@@ -1,7 +1,7 @@
 import { LoaderFunction, json } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
-import BillsCard from "~/components/bills-card";
-import GlobalCard from "~/components/test-card";
+import BillsCard from "archive/bills-card";
+import GlobalCard from "archive/test-card";
 import { requireUserId } from "~/utils/auth.server";
 import { getUserBill } from "~/utils/bill.server";
 export const loader: LoaderFunction = async ({ request }) => {

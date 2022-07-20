@@ -1,10 +1,7 @@
 import { Income, Bill } from "@prisma/client"
 import { Link, useNavigate } from "@remix-run/react"
-import { format, formatISO } from "date-fns"
 import { useState } from "react"
 import { numberWithCommas } from "~/utils/format"
-import { Bills } from "~/utils/types.server"
-import Card from "./Card"
 import CardIncome from "./CardIncome"
 
 type Props = {
@@ -23,11 +20,14 @@ export default function IncomesCard ({ userData, isBill, totalMonthly }: Props) 
       <div>
         { " " }
         <Link to={ `${viewAllLink}/` } className="button">
-          see all bills
+          see all
         </Link>
       </div>
-      <div onClick={ () => navigate(`${newRouteLink}/create}`) }>
-        Add a New BIll
+
+      <div onClick={ () => navigate(`${newRouteLink}/create`) }>
+        <span className="material-symbols-outlined">
+          add
+        </span>
       </div>
 
       <p className="font-Eczar font-normal text-3xl underline decoration-red-700 underline-offset-8  md:text-5xl">
@@ -43,7 +43,8 @@ export default function IncomesCard ({ userData, isBill, totalMonthly }: Props) 
           className="flex flex-col items-center text-center text-base w-full dark:bg-zinc-700 md:max-w-screen-xl rounded overflow-hidden shadow-2xl transition duration-500 ease-in-out delay-150 transform hover:-translate-y-1 hover:scale-110 mb-2 mt-2 py-2 md:text-lg"
           key={ item.id }
         >
-          <CardIncome item={ item } isBill={ isBill } /></div>
+          <CardIncome item={ item } isBill={ isBill } />
+        </div>
       )) }
     </>
   )
