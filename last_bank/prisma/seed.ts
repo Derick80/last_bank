@@ -21,6 +21,62 @@ async function seed() {
       password: hashedPassword,
     },
   });
+
+  const ccTag = await prisma.tag.create({
+    data: {
+      tagName: "Credit Cards",
+    },
+  });
+  const otherTag = await prisma.tag.create({
+    data: {
+      tagName: "Other",
+    },
+  });
+  const paycheckTag = await prisma.tag.create({
+    data: {
+      tagName: "Paycheck",
+    },
+  });
+
+  const slTag = await prisma.tag.create({
+    data: {
+      tagName: "Student Loans",
+    },
+  });
+
+  const homeLoan = await prisma.tag.create({
+    data: {
+      tagName: "Mortgage",
+    },
+  });
+  const carLoan = await prisma.tag.create({
+    data: {
+      tagName: "Car",
+    },
+  });
+  const condoTag = await prisma.tag.create({
+    data: {
+      tagName: "Condo Bill",
+    },
+  });
+
+  const uTag = await prisma.tag.create({
+    data: {
+      tagName: "Utilities",
+    },
+  });
+
+  const entertainmentSub = await prisma.tag.create({
+    data: {
+      tagName: "Entertainment",
+    },
+  });
+
+  const softwareSub = await prisma.tag.create({
+    data: {
+      tagName: "Software",
+    },
+  });
   await prisma.profile.create({
     data: {
       userId: user.id,
@@ -71,8 +127,17 @@ async function seed() {
       description: "debit",
       due_date: "2022-07-01T19:00:52Z",
       amount: 1580.79,
+      tags: {
+        connectOrCreate: {
+          create: { tagName: "Mortgage" },
+          where: {
+            id: homeLoan.id,
+          },
+        },
+      },
     },
   });
+
   await prisma.bill.create({
     data: {
       userId: user.id,
@@ -82,6 +147,14 @@ async function seed() {
       description: "debit",
       due_date: "2022-07-04T19:00:52Z",
       amount: 10.71,
+      tags: {
+        connectOrCreate: {
+          create: { tagName: "Software" },
+          where: {
+            id: softwareSub.id,
+          },
+        },
+      },
     },
   });
   await prisma.bill.create({
@@ -93,6 +166,14 @@ async function seed() {
       description: "debit",
       due_date: "2022-07-01T19:00:52Z",
       amount: 588,
+      tags: {
+        connectOrCreate: {
+          create: { tagName: "Car" },
+          where: {
+            id: carLoan.id,
+          },
+        },
+      },
     },
   });
   await prisma.bill.create({
@@ -104,6 +185,14 @@ async function seed() {
       description: "debit",
       due_date: "2022-07-01T19:00:52Z",
       amount: 193,
+      tags: {
+        connectOrCreate: {
+          create: { tagName: "Car" },
+          where: {
+            id: carLoan.id,
+          },
+        },
+      },
     },
   });
   await prisma.bill.create({
@@ -115,6 +204,14 @@ async function seed() {
       description: "debit",
       due_date: "2022-07-05T19:00:52Z",
       amount: 98,
+      tags: {
+        connectOrCreate: {
+          create: { tagName: "Credit Card" },
+          where: {
+            id: ccTag.id,
+          },
+        },
+      },
     },
   });
   await prisma.bill.create({
@@ -126,6 +223,14 @@ async function seed() {
       description: "debit",
       due_date: "2022-07-05T19:00:52Z",
       amount: 103.58,
+      tags: {
+        connectOrCreate: {
+          create: { tagName: "Credit Card" },
+          where: {
+            id: ccTag.id,
+          },
+        },
+      },
     },
   });
   await prisma.bill.create({
@@ -137,6 +242,14 @@ async function seed() {
       description: "debit",
       due_date: "2022-07-05T19:00:52Z",
       amount: 13,
+      tags: {
+        connectOrCreate: {
+          create: { tagName: "Software" },
+          where: {
+            id: softwareSub.id,
+          },
+        },
+      },
     },
   });
   await prisma.bill.create({
@@ -148,6 +261,14 @@ async function seed() {
       description: "debit",
       due_date: "2022-07-06T19:00:52Z",
       amount: 76.15,
+      tags: {
+        connectOrCreate: {
+          create: { tagName: "Credit Card" },
+          where: {
+            id: ccTag.id,
+          },
+        },
+      },
     },
   });
   await prisma.bill.create({
@@ -159,6 +280,14 @@ async function seed() {
       description: "debit",
       due_date: "2022-07-09T19:00:52Z",
       amount: 25,
+      tags: {
+        connectOrCreate: {
+          create: { tagName: "Credit Card" },
+          where: {
+            id: ccTag.id,
+          },
+        },
+      },
     },
   });
   await prisma.bill.create({
@@ -170,6 +299,14 @@ async function seed() {
       description: "debit",
       due_date: "2022-07-10T19:00:52Z",
       amount: 124,
+      tags: {
+        connectOrCreate: {
+          create: { tagName: "Utilities" },
+          where: {
+            id: uTag.id,
+          },
+        },
+      },
     },
   });
   await prisma.bill.create({
@@ -181,6 +318,14 @@ async function seed() {
       description: "debit",
       due_date: "2022-07-10T19:00:52Z",
       amount: 46,
+      tags: {
+        connectOrCreate: {
+          create: { tagName: "Credit Card" },
+          where: {
+            id: ccTag.id,
+          },
+        },
+      },
     },
   });
   await prisma.bill.create({
@@ -192,6 +337,14 @@ async function seed() {
       description: "debit",
       due_date: "2022-07-13T19:00:52Z",
       amount: 127,
+      tags: {
+        connectOrCreate: {
+          create: { tagName: "Credit Card" },
+          where: {
+            id: ccTag.id,
+          },
+        },
+      },
     },
   });
   await prisma.bill.create({
@@ -203,6 +356,14 @@ async function seed() {
       description: "debit",
       due_date: "2022-07-15T19:00:52Z",
       amount: 428.14,
+      tags: {
+        connectOrCreate: {
+          create: { tagName: "Mortgage" },
+          where: {
+            id: homeLoan.id,
+          },
+        },
+      },
     },
   });
   await prisma.bill.create({
@@ -214,6 +375,14 @@ async function seed() {
       description: "debit",
       due_date: "2022-07-11T19:00:52Z",
       amount: 28,
+      tags: {
+        connectOrCreate: {
+          create: { tagName: "EnterTainment" },
+          where: {
+            id: entertainmentSub.id,
+          },
+        },
+      },
     },
   });
   await prisma.bill.create({
@@ -225,6 +394,14 @@ async function seed() {
       description: "debit",
       due_date: "2022-07-15T19:00:52Z",
       amount: 181,
+      tags: {
+        connectOrCreate: {
+          create: { tagName: "Credit Card" },
+          where: {
+            id: ccTag.id,
+          },
+        },
+      },
     },
   });
   await prisma.bill.create({
@@ -235,6 +412,14 @@ async function seed() {
       description: "debit",
       due_date: "2022-07-15T19:00:52Z",
       amount: 439,
+      tags: {
+        connectOrCreate: {
+          create: { tagName: "Credit Card" },
+          where: {
+            id: ccTag.id,
+          },
+        },
+      },
     },
   });
   await prisma.bill.create({
@@ -246,6 +431,14 @@ async function seed() {
       description: "debit",
       due_date: "2022-07-15T19:00:52Z",
       amount: 54,
+      tags: {
+        connectOrCreate: {
+          create: { tagName: "Credit Card" },
+          where: {
+            id: ccTag.id,
+          },
+        },
+      },
     },
   });
   await prisma.bill.create({
@@ -257,6 +450,14 @@ async function seed() {
       description: "debit",
       due_date: "2022-07-17T19:00:52Z",
       amount: 38,
+      tags: {
+        connectOrCreate: {
+          create: { tagName: "Credit Card" },
+          where: {
+            id: ccTag.id,
+          },
+        },
+      },
     },
   });
   await prisma.bill.create({
@@ -268,6 +469,14 @@ async function seed() {
       description: "debit",
       due_date: "2022-07-17T19:00:52Z",
       amount: 223,
+      tags: {
+        connectOrCreate: {
+          create: { tagName: "Credit Card" },
+          where: {
+            id: ccTag.id,
+          },
+        },
+      },
     },
   });
   await prisma.bill.create({
@@ -279,6 +488,14 @@ async function seed() {
       description: "debit",
       due_date: "2022-07-17T19:00:52Z",
       amount: 236.89,
+      tags: {
+        connectOrCreate: {
+          create: { tagName: "Student Loans" },
+          where: {
+            id: slTag.id,
+          },
+        },
+      },
     },
   });
   await prisma.bill.create({
@@ -290,6 +507,14 @@ async function seed() {
       description: "debit",
       due_date: "2022-07-18T19:00:52Z",
       amount: 220,
+      tags: {
+        connectOrCreate: {
+          create: { tagName: "Credit Card" },
+          where: {
+            id: ccTag.id,
+          },
+        },
+      },
     },
   });
   await prisma.bill.create({
@@ -301,6 +526,14 @@ async function seed() {
       description: "debit",
       due_date: "2022-07-18T19:00:52Z",
       amount: 182.37,
+      tags: {
+        connectOrCreate: {
+          create: { tagName: "Student Loans" },
+          where: {
+            id: slTag.id,
+          },
+        },
+      },
     },
   });
   await prisma.bill.create({
@@ -312,6 +545,15 @@ async function seed() {
       description: "debit",
       due_date: "2022-07-22T19:00:52Z",
       amount: 50,
+
+      tags: {
+        connectOrCreate: {
+          create: { tagName: "Credit Card" },
+          where: {
+            id: ccTag.id,
+          },
+        },
+      },
     },
   });
   await prisma.bill.create({
@@ -323,6 +565,14 @@ async function seed() {
       description: "debit",
       due_date: "2022-07-24T19:00:52Z",
       amount: 120,
+      tags: {
+        connectOrCreate: {
+          create: { tagName: "Credit Card" },
+          where: {
+            id: ccTag.id,
+          },
+        },
+      },
     },
   });
   await prisma.bill.create({
@@ -342,6 +592,14 @@ async function seed() {
       description: "debit",
       due_date: "2022-07-27T19:00:52Z",
       amount: 12,
+      tags: {
+        connectOrCreate: {
+          create: { tagName: "EnterTainment" },
+          where: {
+            id: entertainmentSub.id,
+          },
+        },
+      },
     },
   });
   await prisma.bill.create({
@@ -351,6 +609,14 @@ async function seed() {
       description: "debit",
       due_date: "2022-07-28T19:00:52Z",
       amount: 104,
+      tags: {
+        connectOrCreate: {
+          create: { tagName: "Credit Card" },
+          where: {
+            id: ccTag.id,
+          },
+        },
+      },
     },
   });
   await prisma.bill.create({
@@ -362,6 +628,14 @@ async function seed() {
       description: "debit",
       due_date: "2022-07-28T19:00:52Z",
       amount: 20,
+      tags: {
+        connectOrCreate: {
+          create: { tagName: "EnterTainment" },
+          where: {
+            id: entertainmentSub.id,
+          },
+        },
+      },
     },
   });
   await prisma.bill.create({
@@ -373,6 +647,14 @@ async function seed() {
       description: "debit",
       due_date: "2022-07-28T19:00:52Z",
       amount: 70,
+      tags: {
+        connectOrCreate: {
+          create: { tagName: "Credit Card" },
+          where: {
+            id: ccTag.id,
+          },
+        },
+      },
     },
   });
   await prisma.bill.create({
@@ -384,6 +666,14 @@ async function seed() {
       description: "debit",
       due_date: "2022-07-28T19:00:52Z",
       amount: 75,
+      tags: {
+        connectOrCreate: {
+          create: { tagName: "Utilities" },
+          where: {
+            id: uTag.id,
+          },
+        },
+      },
     },
   });
   await prisma.account.create({

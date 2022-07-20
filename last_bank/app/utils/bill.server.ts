@@ -43,6 +43,7 @@ export async function getUserBill(userId: string) {
     where: { userId: userId },
 
     orderBy: { due_date: "asc" },
+    include: { tags: true },
   });
   return { userBills };
 }
