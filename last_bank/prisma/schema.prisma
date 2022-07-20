@@ -93,14 +93,6 @@ enum Pronouns {
   SHE
 }
 
-// model BillTags {
-//   id     String  @id @default(uuid())
-//   bill   Bill?   @relation(fields: [billId], references: [id])
-//   tag    Tag?    @relation(fields: [tagId], references: [id])
-//   billId String?
-//   tagId  String?
-// }
-
 model Tag {
   id      String @id @default(uuid())
   tagName String @unique
