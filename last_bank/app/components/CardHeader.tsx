@@ -16,23 +16,23 @@ export default function CardHeader ({ userData, isBill, totalMonthly }: Props) {
   const [show, setShow] = useState(isAll === true ? true : false)
   const navigate = useNavigate()
   const dataForDisplay = show ? userData : userData.slice(0, 4)
-  const newRouteLink = isBill ? "bill" : "income"
+  const newRouteLink = isBill ? "bills" : "incomes"
   const viewAllLink = isBill ? "bills" : "incomes"
 
   const handleAll = () => {
-    navigate(`/${viewAllLink}`)
+    navigate(`${viewAllLink}`)
     setIsAll(isAll)
   }
   return (
     <>
-      <div>
-        { " " }
-        <div onClick={ handleAll } className="button">
-          { isBill ? `View all ${viewAllLink} by Month` : `View all ${viewAllLink} by Month` }
-        </div>
+
+
+      <div onClick={ handleAll } className="button">
+        { isBill ? `View all ${viewAllLink} by Month` : `View all ${viewAllLink} by Month` }
       </div>
 
-      <div onClick={ () => navigate(`${newRouteLink}/create`) }>
+
+      <div onClick={ () => navigate(`/${newRouteLink}/create`) }>
         <span className="material-symbols-outlined">add</span>
       </div>
 

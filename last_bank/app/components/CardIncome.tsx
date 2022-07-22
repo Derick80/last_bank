@@ -35,8 +35,8 @@ export default function CardIncome ({ item, isBill, isAll }: Props) {
               className="items-center p-2"
               onClick={ () =>
                 isBill
-                  ? navigate(`bill/${item.id}`)
-                  : navigate(`income/${item.id}`)
+                  ? navigate(`/bills/${item.id}`)
+                  : navigate(`incomes/${item.id}`)
               }
             >
               <span className="material-symbols-outlined">edit</span>

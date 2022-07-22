@@ -1,6 +1,6 @@
 import type { LoaderFunction, ActionFunction } from "@remix-run/node"
 import { json, redirect } from "@remix-run/node"
-import { useActionData, useLoaderData } from "@remix-run/react"
+import { useActionData, useLoaderData, useParams } from "@remix-run/react"
 import React, { useEffect, useRef, useState } from "react"
 import { ImageUploader } from "~/components/image-uploader"
 import { Modal } from "~/components/shared/modal"
@@ -82,11 +82,12 @@ export const action: ActionFunction = async ({ request }) => {
 
 export const loader: LoaderFunction = async ({ request }) => {
   const user = await getUser(request)
-  return json({ user })
+  const userId = await useParams
+  return json({ user, userId })
 }
 
 export default function ProfileSettings () {
-  const { user } = useLoaderData()
+  const { user, userId } = useLoaderData()
   const actionData = useActionData()
 
   const [formError, setFormError] = useState(actionData?.error || "")

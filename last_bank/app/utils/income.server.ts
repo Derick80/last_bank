@@ -77,7 +77,7 @@ export const updateOneUserIncome = async ({
 
 export async function getMonthlyUserIncome(userId: string) {
   const { now, then } = dateRange();
-  const monthlyUserIncomes = await prisma.bill.findMany({
+  const monthlyUserIncomes = await prisma.income.findMany({
     where: {
       userId: userId,
       due_date: {
@@ -86,7 +86,6 @@ export async function getMonthlyUserIncome(userId: string) {
       },
     },
     orderBy: { due_date: "asc" },
-    include: { tags: true },
   });
   return { monthlyUserIncomes };
 }

@@ -37,8 +37,6 @@ export const loader: LoaderFunction = async ({ request }) => {
   const user = await getUser(request)
   const profile = user?.profile
   const { data } = await getAllUserData(userId)
-  const { userBills } = await getUserBill(userId)
-  const { userIncomes } = await getUserIncome(userId)
 
   const { monthlyUserBills } = await getMonthlyUserBill(userId)
   const { monthlyUserIncomes } = await getMonthlyUserIncome(userId)
@@ -47,8 +45,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   const totalMonthlyIncomes = sumTotals(monthlyUserIncomes)
   return json({
     userId,
-    userBills,
-    userIncomes,
+
     totalMonthlyBills,
     totalMonthlyIncomes,
     user,
@@ -64,9 +61,6 @@ export default function DashboardRoute () {
 
   const {
     userId,
-    data,
-    userBills,
-    userIncomes,
     user,
     totalMonthlyIncomes,
     totalMonthlyBills,
@@ -87,7 +81,7 @@ export default function DashboardRoute () {
 
       />
       <CardContainer
-        income={ userIncomes }
+        income={ monthlyUserIncomes }
         isBill={ false }
         monthlyTotals={ totalMonthlyIncomes }
         isAll={ false }
@@ -98,15 +92,3 @@ export default function DashboardRoute () {
   )
 }
 
-// <div className="h-full w-full col-span-1 md:col-start-8 md:col-end-12">
-//   <div className="new-outlet" onClick={ () => navigate(`income/create`) }>
-//     Create a New Income
-//   </div>
-//   <div className="text-2xl font-normal md:text-3xl">Income</div>
-//   <p className="font-['Eczar'] font-normal text-3xl underline underline-offset-8 decoration-green-700  md:text-5xl">
-//     ${ numberWithCommas(totalMonthlyIncomes) }
-//   </p>
-//   {/* this is correct */ }
-
-//   <IncomesCard userIncomes={ userIncomes } />
-// </div>

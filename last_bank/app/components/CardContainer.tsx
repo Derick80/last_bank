@@ -32,31 +32,22 @@ export default function CardContainer ({
   const viewAllLink = isBill ? "bills" : "incomes"
   const totalMonthly = monthlyTotals
 
-
   return (
     <>
-      <div className="h-full w-full row-span-1 row-start-1 col-span-1 md:col-start-3 md:col-end-7 md:row-auto">
-        <div>
-          { bill && (
-            <CardHeader
-              userData={ bill }
-              isBill={ true }
-              totalMonthly={ totalMonthly }
-
-            />
-          ) }
-        </div>
-      </div>
-      <div className="h-full w-full row-span-1 row-start-1 col-span-1 md:col-start-8 md:col-end-12">
-
+      { bill && (
+        <CardHeader
+          userData={ bill }
+          isBill={ true }
+          totalMonthly={ totalMonthly }
+        />
+      ) }<>
         { income && (
           <CardHeader
             userData={ income }
             isBill={ false }
             totalMonthly={ totalMonthly }
           />
-        ) }
-      </div>
+        ) }</>
     </>
   )
 

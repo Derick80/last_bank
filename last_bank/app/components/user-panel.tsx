@@ -35,7 +35,7 @@ export default function UserPanel ({ profile }: { profile: Profile }) {
         </div>
 
         <Tooltip message="Profile">
-          <div onClick={ () => navigate(`profile`) }>
+          <div onClick={ () => navigate(`/${profile.userId}`) }>
             <span className="material-symbols-outlined">person</span>
           </div>
         </Tooltip>
