@@ -1,5 +1,6 @@
 // app/routes/avatar.tsx
-import { ActionFunction, json } from "@remix-run/node";
+import type { ActionFunction } from "@remix-run/node";
+import { json } from "@remix-run/node";
 import { requireUserId } from "~/utils/auth.server";
 import { uploadAvatar } from "~/utils/s3.server";
 import { prisma } from "~/utils/prisma.server";
@@ -12,6 +13,9 @@ export const action: ActionFunction = async ({ request }) => {
 
   // 3
   await prisma.user.update({
+    where: {
+      id: userId,
+    },
     data: {
       profile: {
         update: {
@@ -19,10 +23,8 @@ export const action: ActionFunction = async ({ request }) => {
         },
       },
     },
-    where: {
-      id: userId,
-    },
   });
+  console.log({ imageUrl });
 
   // 4
   return json({ imageUrl });

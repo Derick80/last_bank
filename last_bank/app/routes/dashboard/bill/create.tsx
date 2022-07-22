@@ -1,46 +1,46 @@
-import type { ActionFunction, LoaderFunction } from "@remix-run/node";
-import { json, redirect } from "@remix-run/node";
-import { Form, useActionData, useLoaderData } from "@remix-run/react";
-import React, { useState } from "react";
-import FormField from "~/components/shared/form-field";
-import { Modal } from "~/components/modal";
-import ToggleButton from "archive/ToggleButton";
-import { getUserId, requireUserId } from "~/utils/auth.server";
-import { createBill } from "~/utils/bill.server";
+import type { ActionFunction, LoaderFunction } from "@remix-run/node"
+import { json, redirect } from "@remix-run/node"
+import { Form, useActionData, useLoaderData } from "@remix-run/react"
+import React, { useState } from "react"
+import FormField from "~/components/shared/form-field"
+import { Modal } from "~/components/shared/modal"
+import ToggleButton from "archive/ToggleButton"
+import { getUserId, requireUserId } from "~/utils/auth.server"
+import { createBill } from "~/utils/bill.server"
 import {
   validateAmount,
   validateBoolean,
   validateText,
-} from "~/utils/validators.server";
+} from "~/utils/validators.server"
 
 export const loader: LoaderFunction = async ({ request }) => {
-  const userId = await getUserId(request);
+  const userId = await getUserId(request)
   if (!userId) {
-    throw new Response("Unauthorized", { status: 401 });
+    throw new Response("Unauthorized", { status: 401 })
   }
-  return json({ userId });
-};
+  return json({ userId })
+}
 
 export const action: ActionFunction = async ({ request }) => {
-  const userId = await requireUserId(request);
-  const formData = await request.formData();
-  const source = formData.get("source");
-  const description = formData.get("description");
-  let amount = Number(formData.get("amount"));
-  let accountNumber = Number(formData.get("accountNumber"));
+  const userId = await requireUserId(request)
+  const formData = await request.formData()
+  const source = formData.get("source")
+  const description = formData.get("description")
+  let amount = Number(formData.get("amount"))
+  let accountNumber = Number(formData.get("accountNumber"))
   // @ts-ignore
-  let due_date = new Date(formData.get("due_date"));
+  let due_date = new Date(formData.get("due_date"))
 
-  let recurring = Boolean(formData.get("recurring"));
+  let recurring = Boolean(formData.get("recurring"))
 
-  let paid = Boolean(formData.get("paid"));
+  let paid = Boolean(formData.get("paid"))
 
   if (
     typeof source !== "string" ||
     typeof description !== "string" ||
     typeof amount !== "number"
   ) {
-    return json({ error: "invalid form data", form: action }, { status: 400 });
+    return json({ error: "invalid form data", form: action }, { status: 400 })
   }
 
   const errors = {
@@ -51,7 +51,7 @@ export const action: ActionFunction = async ({ request }) => {
     amount: validateAmount(amount as number),
     recurring: validateBoolean(recurring as boolean),
     paid: validateBoolean(paid as boolean),
-  };
+  }
 
   if (Object.values(errors).some(Boolean))
     return json(
@@ -61,7 +61,7 @@ export const action: ActionFunction = async ({ request }) => {
         form: action,
       },
       { status: 400 }
-    );
+    )
   const bill = await createBill({
     source,
     amount,
@@ -72,17 +72,17 @@ export const action: ActionFunction = async ({ request }) => {
 
     description,
     userId,
-  });
+  })
 
-  return redirect("/dashboard");
-};
+  return redirect("/dashboard")
+}
 
-export default function Create() {
-  const actionData = useActionData();
-  const { userId } = useLoaderData();
+export default function Create () {
+  const actionData = useActionData()
+  const { userId } = useLoaderData()
 
-  const [formError, setFormError] = useState(actionData?.error || "");
-  const [errors, setErrors] = useState(actionData?.errors || {});
+  const [formError, setFormError] = useState(actionData?.error || "")
+  const [errors, setErrors] = useState(actionData?.errors || {})
 
   const [formData, setFormData] = useState({
     source: "",
@@ -93,7 +93,7 @@ export default function Create() {
     recurring: false,
     userId: userId,
     paid: false,
-  });
+  })
 
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLFormElement>,
@@ -102,8 +102,8 @@ export default function Create() {
     setFormData((form) => ({
       ...form,
       [field]: event.target.value,
-    }));
-  };
+    }))
+  }
 
   const triggerToggle = (
     event: React.ChangeEvent<HTMLInputElement | HTMLFormElement>,
@@ -112,68 +112,68 @@ export default function Create() {
     setFormData((form) => ({
       ...form,
       [field]: event.target.checked,
-    }));
-  };
+    }))
+  }
   return (
-    <Modal isOpen={true} className="w-2/3 p-10 flex flex-col">
+    <Modal isOpen={ true } className="w-2/3 p-10 flex flex-col">
       <Form method="post" className="md:text-xl font-semibold">
         <FormField
           htmlFor="source"
           label="Source"
-          value={formData.source}
-          onChange={(event: any) => handleInputChange(event, "source")}
-          error={errors?.source}
+          value={ formData.source }
+          onChange={ (event: any) => handleInputChange(event, "source") }
+          error={ errors?.source }
         />
         <FormField
           htmlFor="description"
           label="description"
-          value={formData.description}
-          onChange={(event: any) => handleInputChange(event, "description")}
-          error={errors?.description}
+          value={ formData.description }
+          onChange={ (event: any) => handleInputChange(event, "description") }
+          error={ errors?.description }
         />
         <FormField
           htmlFor="amount"
           label="amount"
           type="number"
-          value={formData.amount}
-          onChange={(event: any) => handleInputChange(event, "amount")}
-          error={errors?.amount}
+          value={ formData.amount }
+          onChange={ (event: any) => handleInputChange(event, "amount") }
+          error={ errors?.amount }
         />
         <FormField
           htmlFor="accountNumber"
           label="accountNumber"
           type="number"
-          value={formData.accountNumber}
-          onChange={(event: any) => handleInputChange(event, "accountNumber")}
-          error={errors?.accountNumber}
+          value={ formData.accountNumber }
+          onChange={ (event: any) => handleInputChange(event, "accountNumber") }
+          error={ errors?.accountNumber }
         />
         <FormField
           htmlFor="due_date"
           label="due_date"
           type="date"
-          value={formData.due_date}
-          onChange={(event: any) => handleInputChange(event, "due_date")}
-          error={errors?.due_date}
+          value={ formData.due_date }
+          onChange={ (event: any) => handleInputChange(event, "due_date") }
+          error={ errors?.due_date }
         />
         <FormField
           htmlFor="recurring"
           label="Recurring"
           type="checkbox"
           name="recurring"
-          checked={formData.recurring}
-          value={formData.recurring}
-          onChange={(event: any) => triggerToggle(event, "recurring")}
-          error={errors?.recurring}
+          checked={ formData.recurring }
+          value={ formData.recurring }
+          onChange={ (event: any) => triggerToggle(event, "recurring") }
+          error={ errors?.recurring }
         />
 
         <FormField
           htmlFor="paid"
           label="Paid"
           type="checkbox"
-          checked={formData.paid}
-          value={formData.paid}
-          onChange={(event: any) => triggerToggle(event, "paid")}
-          error={errors?.paid}
+          checked={ formData.paid }
+          value={ formData.paid }
+          onChange={ (event: any) => triggerToggle(event, "paid") }
+          error={ errors?.paid }
         />
 
         <div className="w-full text-container">
@@ -186,5 +186,5 @@ export default function Create() {
         </div>
       </Form>
     </Modal>
-  );
+  )
 }

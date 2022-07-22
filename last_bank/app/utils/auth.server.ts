@@ -115,8 +115,7 @@ export async function getUser(request: Request) {
       select: {
         id: true,
         email: true,
-        firstName: true,
-        lastName: true,
+
         accounts: true,
 
         profile: true,

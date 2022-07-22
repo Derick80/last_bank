@@ -8,8 +8,10 @@ import Tooltip from "./shared/ToolTip"
 type Props = {
   item: IIncome | IBill
   isBill: boolean
+  isAll?: boolean
 }
-export default function CardIncome ({ item, isBill }: Props) {
+export default function CardIncome ({ item, isBill, isAll }: Props) {
+
   const navigate = useNavigate()
   const [expand, setExpand] = useState(false)
   let ttMessage = !expand ? "Expand to See More" : "Collapse"
@@ -20,83 +22,91 @@ export default function CardIncome ({ item, isBill }: Props) {
   // console.log(tag)
 
   return (
-    <div className="flex flex-row static w-full justify-between p-3">
-      <div className="flex flex-col place-items-start">
-        <div className="uppercase">{ item.source }</div>
-        <div>Due { format(new Date(item.due_date), "MMMM, do") }</div>
-        { item.tags &&
-          item.tags.map((tag) => (
+    <div className="flex flex-col static w-full justify-between p-3">
+      <div className="flex flex-row justify-between">
+        <div className="flex flex-col place-items-start">
+          <div className="uppercase">{ item.source }</div>
+          <div>Due { format(new Date(item.due_date), "MMMM, do") }</div>
+        </div>
+        <div className="font-['Eczar'] text-base flex flex-row items-center md:text-xl">
+          ${ numberWithCommas(item.amount) }
+          <Tooltip message="Edit item">
             <div
-              key={ tag.id }
-              className="rounded-md bg-red-400 p-1 uppercase font-bold"
+              className="items-center p-2"
+              onClick={ () =>
+                isBill
+                  ? navigate(`bill/${item.id}`)
+                  : navigate(`income/${item.id}`)
+              }
             >
-              { tag.tagName }
+              <span className="material-symbols-outlined">edit</span>
             </div>
-          )) }
-        { expand === true ? (
-          <>
-            <div className="flex flex-row justify-center">
-              <div className="flex flex-col place-items-start">
-                <div>
-                  { item.recurring === true ? (
-                    <div className="flex flex-row justify-center">
-                      Recurring
-                      <span className="material-symbols-outlined">
-                        check_box
-                      </span>
-                    </div>
-                  ) : (
-                    <div className="flex flex-row justify-center">
-                      Recurring{ " " }
-                      <span className="material-symbols-outlined">
-                        check_box_outline_blank
-                      </span>{ " " }
-                    </div>
-                  ) }
-                </div>
-                <div>
-                  { item.paid === true ? (
-                    <div className="flex flex-row justify-center">
-                      paid
-                      <span className="material-symbols-outlined">
-                        check_box
-                      </span>
-                    </div>
-                  ) : (
-                    <div className="flex flex-row justify-center">
-                      paid{ " " }
-                      <span className="material-symbols-outlined">
-                        check_box_outline_blank
-                      </span>{ " " }
-                    </div>
-                  ) }
-                </div>
-              </div>
-              <div className="flex flex-row justify-center">
-                { item.description }
-              </div>
-            </div>
-          </>
-        ) : null }
-      </div>
-      <div className="font-['Eczar'] text-base flex flex-row items-center md:text-xl">
-        ${ numberWithCommas(item.amount) }
-        <Tooltip message="Edit item">
-          <div
-            className="items-center p-2"
-            onClick={ () =>
-              isBill
-                ? navigate(`bill/${item.id}`)
-                : navigate(`income/${item.id}`)
-            }
-          >
-            <span className="material-symbols-outlined">edit</span>
-          </div>
-        </Tooltip>
+          </Tooltip>
+        </div>
       </div>
 
+      { expand === true ? (
+        <>
+          <div className="flex justify-between items-center">
+            <div>
+              { item.recurring === true ? (
+                <div className="flex flex-row justify-center">
+                  Recurring
+                  <span className="material-symbols-outlined">check_box</span>
+                </div>
+              ) : (
+                <div className="flex flex-row justify-center">
+                  Recurring{ " " }
+                  <span className="material-symbols-outlined">
+                    check_box_outline_blank
+                  </span>{ " " }
+                </div>
+              ) }
+            </div>
+            { item.tags &&
+              item.tags.map((tag) => (
+                <div
+                  key={ tag.id }
+                  className="rounded-md bg-red-400 p-1 uppercase font-bold"
+                >
+                  { tag.tagName }
+                </div>
+              )) }
+            <div>
+              { item.paid === true ? (
+                <div className="flex flex-row justify-center">
+                  paid
+                  <span className="material-symbols-outlined">check_box</span>
+                </div>
+              ) : (
+                <div className="flex flex-row justify-between">
+                  paid{ " " }
+                  <span className="material-symbols-outlined">
+                    check_box_outline_blank
+                  </span>{ " " }
+                </div>
+              ) }
+            </div>
+          </div>
+
+          <div className="items-center"> { item.description }</div>
+        </>
+      ) : (
+        <div className="flex justify-center">
+          { item.tags &&
+            item.tags.map((tag) => (
+              <div
+                key={ tag.id }
+                className="rounded-md bg-red-400 p-1 uppercase w-1/4 justify-center font-bold"
+              >
+                { tag.tagName }
+              </div>
+            )) }
+        </div>
+      ) }
+
       <div
-        className="text-center absolute bottom-0 left-1/2"
+        className="text-center absolute bottom-0 w-1/2"
         onClick={ () => setExpand(!expand) }
       >
         <Tooltip message={ ttMessage }>

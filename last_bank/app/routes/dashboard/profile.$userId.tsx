@@ -1,10 +1,10 @@
-import React from "react";
-import { Modal } from "~/components/modal";
+import React from "react"
+import { Modal } from "~/components/shared/modal"
 
-export default function ProfileModal() {
+export default function ProfileModal () {
   return (
-    <Modal isOpen={true} className="w-2/3 p-10">
-      {" "}
+    <Modal isOpen={ true } className="w-2/3 p-10">
+      { " " }
     </Modal>
-  );
+  )
 }

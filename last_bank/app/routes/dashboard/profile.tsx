@@ -3,8 +3,8 @@ import { json, redirect } from "@remix-run/node"
 import { useActionData, useLoaderData } from "@remix-run/react"
 import React, { useEffect, useRef, useState } from "react"
 import { ImageUploader } from "~/components/image-uploader"
-import { Modal } from "~/components/modal"
-import { SelectBox } from "~/components/select-box"
+import { Modal } from "~/components/shared/modal"
+import { SelectBox } from "~/components/shared/select-box"
 import FormField from "~/components/shared/form-field"
 import { getUser, logout, requireUserId } from "~/utils/auth.server"
 import { pronouns } from "~/utils/constants"
@@ -17,9 +17,10 @@ import { format } from "date-fns"
 export const action: ActionFunction = async ({ request }) => {
   const userId = await requireUserId(request)
   const form = await request.formData()
+  let firstName = form.get('firstName')
+  let lastName = form.get('lastName')
+  // @ts-ignore
 
-  let firstName = form.get("firstName")
-  let lastName = form.get("lastName")
   let birthDay = new Date(form.get("birthDay"))
   let currentLocation = form.get("currentLocation")
   let occupation = form.get("occupation")
@@ -48,22 +49,27 @@ export const action: ActionFunction = async ({ request }) => {
 
       if (Object.values(errors).some(Boolean))
         return json(
-          { errors, fields: { occupation, firstName, lastName } },
+          {
+            errors,
+            fields: {
+              firstName,
+              lastName,
+              occupation,
+              currentLocation,
+              pronouns,
+            },
+          },
           { status: 400 }
         )
 
-      await updateUser(
-        userId,
-        {
-          firstName,
-          lastName,
-        },
-        {
-          birthDay,
-          currentLocation,
-          occupation,
-          pronouns: pronouns as Pronouns,
-        }
+      await updateUser(userId, {
+        firstName,
+        lastName,
+        birthDay,
+        currentLocation,
+        occupation,
+        pronouns: pronouns as Pronouns,
+      }
       )
       return redirect("/")
     case "delete":
@@ -82,18 +88,20 @@ export const loader: LoaderFunction = async ({ request }) => {
 export default function ProfileSettings () {
   const { user } = useLoaderData()
   const actionData = useActionData()
+
   const [formError, setFormError] = useState(actionData?.error || "")
+
   const firstLoad = useRef(true)
+
   const [formData, setFormData] = useState({
-    firstName: actionData?.fields?.firstName || user?.firstName,
-    lastName: actionData?.fields?.lastName || user?.lastName,
+    firstName: actionData?.fields?.firstName || user?.profile?.firstName,
+    lastName: actionData?.fields?.lastName || user?.profile?.lastName,
     birthDay: actionData?.fields?.birthDay || user?.profile?.birthDay,
     currentLocation:
       actionData?.fields?.currentLocation || user?.profile?.currentLocation,
-    pronouns:
-      actionData?.fields?.pronouns || user?.profile?.pronouns || "MARKETING",
+    pronouns: actionData?.fields?.pronouns || (user?.profile?.pronouns || "THEY"),
     occupation: actionData?.fields?.occupation || user?.profile?.occupation,
-    profilePicture: user?.profile?.profilePicture || "",
+    profilePicture: user?.profile?.profilePicture || '',
   })
 
   useEffect(() => {
@@ -116,7 +124,6 @@ export default function ProfileSettings () {
   const handleFileUpload = async (file: File) => {
     let inputFormData = new FormData()
     inputFormData.append("profile-pic", file)
-
     const response = await fetch("/avatar", {
       method: "POST",
       body: inputFormData,
@@ -142,7 +149,7 @@ export default function ProfileSettings () {
           <div className="w-1/3">
             <ImageUploader
               onChange={ handleFileUpload }
-              imageUrl={ formData.profilePicture || "" }
+              imageUrl={ formData.profilePicture || '' }
             />
           </div>
           <div className="flex-1">
@@ -153,24 +160,29 @@ export default function ProfileSettings () {
               }
             >
               <FormField
+                className="border"
                 htmlFor="firstName"
-                label="First Name"
+                label="FirstName"
+                labelClass="text-2xl font-semibold my-2 px-2"
                 value={ formData.firstName }
-                onChange={ (e) => handleInputChange(e, "firstName") }
+                onChange={ (event) => handleInputChange(event, "firstName") }
                 error={ actionData?.errors?.firstName }
               />
               <FormField
+                className="border"
                 htmlFor="lastName"
-                label="Last Name"
+                label="LastName"
+                labelClass="text-2xl font-semibold my-2 px-2"
                 value={ formData.lastName }
-                onChange={ (e) => handleInputChange(e, "lastName") }
+                onChange={ (event) => handleInputChange(event, "lastName") }
                 error={ actionData?.errors?.lastName }
               />
+
               <FormField
                 htmlFor="birthDay"
                 label="Birthday"
                 value={ format(new Date(formData.birthDay), "yyyy-MM-dd") }
-                onChange={ (e) => handleInputChange(e, "birthDay") }
+                onChange={ (e: any) => handleInputChange(e, "birthDay") }
                 error={ actionData?.errors?.birthDay }
               />
               <FormField

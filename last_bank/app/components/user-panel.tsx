@@ -11,9 +11,7 @@ export default function UserPanel ({ profile }: { profile: Profile }) {
         <div className="flex flex-col items-center py-4">
           <Tooltip message="DashBoard Home">
             <Link to="/">
-              <span className="material-symbols-outlined">
-                dashboard
-              </span>
+              <span className="material-symbols-outlined">dashboard</span>
             </Link>
           </Tooltip>
 

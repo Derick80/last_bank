@@ -1,45 +1,50 @@
-import { Bill, Income, Profile, User } from "@prisma/client";
-import { json, LoaderFunction } from "@remix-run/node";
+import { Bill, Income, Profile, User } from "@prisma/client"
+import { json, LoaderFunction } from "@remix-run/node"
 import {
   Link,
   NavLink,
   Outlet,
   useLoaderData,
   useNavigate,
-} from "@remix-run/react";
-import BillsCard from "archive/bills-card";
-import IncomesCard from "~/components/incomes-card";
-import Layout from "~/components/layout";
-import CardContainer from "~/components/CardContainer";
-import UserPanel from "~/components/user-panel";
+} from "@remix-run/react"
 
-import { getUser, requireUserId } from "~/utils/auth.server";
-import { getUserBill } from "~/utils/bill.server";
-import { numberWithCommas } from "~/utils/format";
-import { sumTotals } from "~/utils/functions.server";
-import { getUserIncome } from "~/utils/income.server";
-import { getAllUserData, getUserProfile } from "~/utils/users.server";
+import Layout from "~/components/layout"
+import CardContainer from "~/components/CardContainer"
+import UserPanel from "~/components/user-panel"
+
+import { getUser, requireUserId } from "~/utils/auth.server"
+import { getMonthlyUserBill, getUserBill } from "~/utils/bill.server"
+import { numberWithCommas } from "~/utils/format"
+import { sumTotals } from "~/utils/functions.server"
+import { getMonthlyUserIncome, getUserIncome } from "~/utils/income.server"
+import { getAllUserData, getUserProfile } from "~/utils/users.server"
+import { IBill, IIncome } from '~/utils/types.server'
 type LoaderData = {
-  user: User;
-  userBills: Bill[];
-  isBill: boolean;
-  profile: Profile;
-  userIncomes: Income[];
-  totalMonthlyBills: number;
-  totalMonthlyIncomes: number;
-  userId: string;
-  data: Bill | Income;
-};
+  user: User
+  userBills: Bill[]
+  isBill: boolean
+  profile: Profile
+  userIncomes: IIncome[]
+  totalMonthlyBills: number
+  totalMonthlyIncomes: number
+  userId: string
+  data: Bill | Income
+  monthlyUserBills: IBill[]
+  monthlyUserIncomes: IIncome[]
+}
 export const loader: LoaderFunction = async ({ request }) => {
-  const userId = await requireUserId(request);
-  const user = await getUser(request);
-  const profile = user?.profile;
-  const { data } = await getAllUserData(userId);
-  const { userBills } = await getUserBill(userId);
-  const { userIncomes } = await getUserIncome(userId);
-  const totalMonthlyBills = sumTotals(userBills);
+  const userId = await requireUserId(request)
+  const user = await getUser(request)
+  const profile = user?.profile
+  const { data } = await getAllUserData(userId)
+  const { userBills } = await getUserBill(userId)
+  const { userIncomes } = await getUserIncome(userId)
 
-  const totalMonthlyIncomes = sumTotals(userIncomes);
+  const { monthlyUserBills } = await getMonthlyUserBill(userId)
+  const { monthlyUserIncomes } = await getMonthlyUserIncome(userId)
+
+  const totalMonthlyBills = sumTotals(monthlyUserBills)
+  const totalMonthlyIncomes = sumTotals(monthlyUserIncomes)
   return json({
     userId,
     userBills,
@@ -49,11 +54,13 @@ export const loader: LoaderFunction = async ({ request }) => {
     user,
     profile,
     data,
-  });
-};
+    monthlyUserBills,
+    monthlyUserIncomes
+  })
+}
 
-export default function DashboardRoute() {
-  const navigate = useNavigate();
+export default function DashboardRoute () {
+  const navigate = useNavigate()
 
   const {
     userId,
@@ -64,24 +71,31 @@ export default function DashboardRoute() {
     totalMonthlyIncomes,
     totalMonthlyBills,
     profile,
-  }: LoaderData = useLoaderData();
+    monthlyUserBills,
+    monthlyUserIncomes
+  }: LoaderData = useLoaderData()
 
   return (
     <Layout>
-      <UserPanel profile={profile} />
+      <UserPanel profile={ profile } />
       <Outlet />
       <CardContainer
-        bill={userBills}
-        isBill={true}
-        monthlyTotals={totalMonthlyBills}
+        bill={ monthlyUserBills }
+        isBill={ true }
+        monthlyTotals={ totalMonthlyBills }
+        isAll={ false }
+
       />
       <CardContainer
-        income={userIncomes}
-        isBill={false}
-        monthlyTotals={totalMonthlyIncomes}
+        income={ userIncomes }
+        isBill={ false }
+        monthlyTotals={ totalMonthlyIncomes }
+        isAll={ false }
+
+
       />
     </Layout>
-  );
+  )
 }
 
 // <div className="h-full w-full col-span-1 md:col-start-8 md:col-end-12">

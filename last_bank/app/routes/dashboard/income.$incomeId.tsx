@@ -4,7 +4,7 @@ import { json, redirect, Response } from "@remix-run/node"
 import { useActionData, useLoaderData } from "@remix-run/react"
 import { useState } from "react"
 import FormField from "~/components/shared/form-field"
-import { Modal } from "~/components/modal"
+import { Modal } from "~/components/shared/modal"
 import { getUser, getUserId, requireUserId } from "~/utils/auth.server"
 import { getOneUserIncome, updateOneUserIncome } from "~/utils/income.server"
 import {

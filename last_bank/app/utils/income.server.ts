@@ -1,4 +1,5 @@
 import type { Income, User } from "@prisma/client";
+import { dateRange } from "./functions.server";
 import { prisma } from "./prisma.server";
 import type { CreateIncome } from "./types.server";
 
@@ -73,3 +74,19 @@ export const updateOneUserIncome = async ({
     },
   });
 };
+
+export async function getMonthlyUserIncome(userId: string) {
+  const { now, then } = dateRange();
+  const monthlyUserIncomes = await prisma.bill.findMany({
+    where: {
+      userId: userId,
+      due_date: {
+        gte: now.toISOString(),
+        lte: then.toISOString(),
+      },
+    },
+    orderBy: { due_date: "asc" },
+    include: { tags: true },
+  });
+  return { monthlyUserIncomes };
+}

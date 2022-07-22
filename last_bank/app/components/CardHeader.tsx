@@ -2,27 +2,34 @@ import { Income, Bill } from "@prisma/client"
 import { Link, useNavigate } from "@remix-run/react"
 import { useState } from "react"
 import { numberWithCommas } from "~/utils/format"
-import { IBill, IIncome } from "~/utils/types.server"
+import type { IBill, IIncome } from "~/utils/types.server"
 import CardIncome from "./CardIncome"
 
 type Props = {
   userData: IIncome[] | IBill[]
   isBill: boolean
   totalMonthly: number
+  isAll?: boolean
 }
-export default function IncomesCard ({ userData, isBill, totalMonthly }: Props) {
-  const [show, setShow] = useState(false)
+export default function CardHeader ({ userData, isBill, totalMonthly }: Props) {
+  const [isAll, setIsAll] = useState(false)
+  const [show, setShow] = useState(isAll === true ? true : false)
   const navigate = useNavigate()
   const dataForDisplay = show ? userData : userData.slice(0, 4)
   const newRouteLink = isBill ? "bill" : "income"
-  const viewAllLink = isBill ? "bill" : "income"
+  const viewAllLink = isBill ? "bills" : "incomes"
+
+  const handleAll = () => {
+    navigate(`/${viewAllLink}`)
+    setIsAll(isAll)
+  }
   return (
     <>
       <div>
         { " " }
-        <Link to={ `${viewAllLink}/` } className="button">
-          see all
-        </Link>
+        <div onClick={ handleAll } className="button">
+          { isBill ? `View all ${viewAllLink} by Month` : `View all ${viewAllLink} by Month` }
+        </div>
       </div>
 
       <div onClick={ () => navigate(`${newRouteLink}/create`) }>
@@ -34,7 +41,7 @@ export default function IncomesCard ({ userData, isBill, totalMonthly }: Props) 
       </p>
       <div>
         <button onClick={ () => setShow(!show) }>
-          { show ? "show less" : "show more" }
+          { show ? "show less" : "Show All of this Month" }
         </button>
       </div>
       { dataForDisplay.map((item) => (
@@ -43,7 +50,6 @@ export default function IncomesCard ({ userData, isBill, totalMonthly }: Props) 
           key={ item.id }
         >
           <CardIncome item={ item } isBill={ isBill } />
-
         </div>
       )) }
     </>

@@ -8,9 +8,14 @@ export const createUser = async (user: RegisterForm) => {
   const newUser = await prisma.user.create({
     data: {
       email: user.email,
-      firstName: user.firstName,
-      lastName: user.lastName,
+
       password: passwordHash,
+      profile: {
+        create: {
+          firstName: user.firstName,
+          lastName: user.lastName,
+        },
+      },
     },
   });
   return { id: newUser.id, email: user.email };
@@ -40,18 +45,12 @@ export const getUserProfile = async (userId: string) => {
   return profile;
 };
 
-export const updateUser = async (
-  userId: string,
-  user: Partial<User>,
-  profile: Partial<Profile>
-) => {
+export const updateUser = async (userId: string, profile: Partial<Profile>) => {
   await prisma.user.update({
     where: {
       id: userId,
     },
     data: {
-      firstName: user.firstName,
-      lastName: user.lastName,
       profile: {
         update: profile,
       },
